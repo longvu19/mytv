@@ -46,7 +46,7 @@ onMounted(() => {
   border-bottom: 1px solid rgb(147 147 147);
 
   &--bg-active {
-    background: rgb(0, 0, 0, 0.4);
+    background: rgb(0, 0, 0, 0.7);
   }
 
   &__left,
