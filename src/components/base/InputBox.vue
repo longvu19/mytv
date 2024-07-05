@@ -1,21 +1,17 @@
 <template>
   <label class="label" for="{{id}}" v-if="label">{{ label }}</label>
   <div class="input-box">
-    <input class="input-box__input" :id="id" :type="type" :placeholder="placeholder" :value="modelValue" />
+    <input class="input-box__input" :id="id" :type="type" :placeholder="placeholder" v-model="searchString" />
     <Icon src="search" class="input-box__icon" />
   </div>
 </template>
 <script lang="ts" setup>
 import Icon from './Icon.vue';
+import type { InputProps, WatchCallback } from '../../services/types';
+import { debounce } from '../../utils/helper';
+import { watch } from 'vue';
+const searchString = defineModel<string>();
 
-interface InputProps {
-  id?: string,
-  label?: string,
-  type: string,
-  placeholder?: string,
-  modelValue?: string,
-  icon?: string
-}
 withDefaults(defineProps<InputProps>(), {
   type: 'text',
   label: '',

@@ -1,12 +1,17 @@
 <template>
   <div class="search-box">
     <form action="" method="get">
-      <InputBox id="searchInput" type="text" placeholder="Tìm kiếm" />
+      <InputBox id="searchInput" type="text" v-model="searchString" placeholder="Tìm kiếm" />
+      {{ searchString }}
     </form>
   </div>
 </template>
 <script setup lang="ts">
 import InputBox from './InputBox.vue';
+import {ref} from 'vue';
+import type { Ref } from 'vue';
+
+const searchString : Ref<string> = ref('');
 </script>
 
 <style lang="scss" scoped>

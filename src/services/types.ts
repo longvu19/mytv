@@ -132,3 +132,18 @@ export interface MovieDetailResponse {
   movie: MovieDetail;
   episodes: MovieEpisode[];
 }
+
+export interface InputProps {
+  id?: string,
+  label?: string,
+  type: string,
+  placeholder?: string,
+  modelValue?: string,
+  icon?: string
+}
+
+export type WatchCallback<T> = (
+  value: T,
+  oldValue: T,
+  onCleanup: (cleanupFn: () => void) => void
+) => void
