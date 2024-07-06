@@ -27,6 +27,8 @@ watch(isImgLoaded, () => {
   } else {
     imgRef.value?.remove();
   }
+},{
+  flush: "post"
 });
 </script>
 <template>

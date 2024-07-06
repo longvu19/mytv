@@ -3,6 +3,7 @@ import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import '@splidejs/vue-splide/css';
 import Button from './Button.vue';
 import type { MovieInfo } from '../../services/types';
+import LazyLoadingImg from './LazyLoadingImg.vue';
 defineProps<{
   options: any;
   slides: MovieInfo[] | null;
@@ -14,13 +15,14 @@ defineProps<{
     <template v-for="(movie) in slides" :key="movie.id">
       <SplideSlide class="master-carousel__item">
         <div class="master-carousel__image">
-          <!-- <RouterLink :to="{ name: 'home', params: { id: movie.id } }"> -->
-          <img :src="movie.thumb_url" :alt="movie.name">
+          <LazyLoadingImg :imgSrc="movie.thumb_url" :showPlaceholder="movie.thumb_url === '' || movie.thumb_url === null" :imgAlt="movie.name" />
         </div>
         <div class="master-carousel__info">
           <h3 class="master-carousel__title">{{ movie.name }}</h3>
           <p class="master-carousel__o-title">{{ movie.origin_name }} - {{ movie.year }}</p>
+          <RouterLink :to="{ name: 'phim', params: { slug: movie.slug } }" class="main-menu__link">
           <Button type="button" class="master-carousel__button" size="large" icon="play" :primary="true">Xem ngay</Button>
+          </RouterLink>
         </div>
       </SplideSlide>
     </template>
