@@ -1,27 +1,30 @@
 <script setup lang="ts">
-import Menu from '../base/Menu.vue';
-import SearchBox from '../base/SearchBox.vue';
+import Menu from "../base/Menu.vue";
+import SearchBox from "../base/SearchBox.vue";
 
-import { ref, onMounted, computed } from 'vue';
-import logo from '/logo-mytv.svg?url';
+import { ref, onMounted, computed } from "vue";
+import logo from "/logo-mytv.svg?url";
 
 const scrollTop = ref(0);
 const classObject = computed(() => {
   return {
-    'header--bg-active': scrollTop.value > 0
-  }
-})
+    "header--bg-active": scrollTop.value > 0,
+  };
+});
 onMounted(() => {
-  window.addEventListener('scroll', () => {
+  window.addEventListener("scroll", () => {
     scrollTop.value = window.scrollY;
-  })
-})
+  });
+});
 </script>
 <template>
   <header class="header" :class="classObject">
     <div class="header__left">
       <div class="header__logo">
-        <img :src="logo" alt="logo">
+        <RouterLink to="/" class="header__logo-link">
+          <h1>MyTV</h1>
+          <img :src="logo" alt="logo" />
+        </RouterLink>
       </div>
       <Menu />
     </div>
@@ -29,7 +32,6 @@ onMounted(() => {
       <SearchBox />
     </div>
   </header>
-
 </template>
 <style lang="scss" scoped>
 .header {
@@ -64,10 +66,22 @@ onMounted(() => {
     justify-content: center;
     height: 50px;
 
-    img {
+    &-link {
+      text-decoration: none;
       height: 100%;
-      width: auto;
+      img {
+        height: 100%;
+        width: auto;
+      }
+
+      h1 {
+        margin: 0;
+        color: white;
+        visibility: hidden;
+        font-size:0;
+      }
     }
+
   }
 }
 </style>

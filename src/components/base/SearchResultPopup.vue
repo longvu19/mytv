@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import type { ComputedRef } from "vue";
 import type {
   MovieSearchResultResponse,
@@ -13,6 +13,16 @@ const props = defineProps<{
 const data: ComputedRef<MovieListInfo[]> = computed(() => {
   return props.result.data.items;
 });
+
+const emits = defineEmits<{
+  (e: 'closePopup', event: Event): void
+}>();
+
+onMounted(() => {
+  window.addEventListener("click", (e) => {
+    emits("closePopup", e);
+  })
+})
 </script>
 
 <template>

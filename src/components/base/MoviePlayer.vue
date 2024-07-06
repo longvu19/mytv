@@ -14,7 +14,7 @@ const props= defineProps<{
 
 <style lang="scss" scoped>
 .movie-player {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   outline:none;
 }

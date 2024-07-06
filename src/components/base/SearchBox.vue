@@ -1,15 +1,19 @@
 <template>
-  <div class="search-box">
+  <div class="search-box" ref="searchBox">
     <form @submit.prevent="submitSearchHandler" method="get">
       <InputBox
         id="searchInput"
         type="text"
         v-model="searchString"
         placeholder="Tìm kiếm"
-        @blur="inputBlurHandler"
       />
     </form>
-    <SearchResultPopup v-if="searchResult" :result="searchResult" :keyword="searchString" />
+    <SearchResultPopup
+      v-if="searchResult"
+      :result="searchResult"
+      :keyword="searchString"
+       @closePopup="closePopupHandler"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -20,23 +24,26 @@ import type { Ref } from "vue";
 import { debounce } from "../../utils/helper";
 import { getMovieSearchResult } from "../../services/movieService";
 import type { MovieSearchResultResponse } from "../../services/types";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 const router = useRouter();
 const searchString: Ref<string> = ref("");
 const searchResult: Ref<MovieSearchResultResponse | null> = ref(null);
+const searchBox: Ref<HTMLElement | null> = ref(null);
 watch(
   searchString,
   debounce(async () => {
-    if(searchString.value !== "") searchResult.value = await getMovieSearchResult(searchString.value);
+    if (searchString.value !== "")
+      searchResult.value = await getMovieSearchResult(searchString.value);
   }, 300)
 );
 
-function inputBlurHandler() {
-  searchResult.value = null;
+function closePopupHandler(event: Event): void {
+  if(searchBox.value?.contains(event.target as Node)) searchResult.value = null;
 }
 
 function submitSearchHandler() {
-  if(searchString.value !== "") router.push({ name: 'tim-kiem', query: { k: searchString.value } });
+  if (searchString.value !== "")
+    router.push({ name: "tim-kiem", query: { k: searchString.value } });
 }
 </script>
 

@@ -7,7 +7,6 @@
       :type="type"
       :placeholder="placeholder"
       v-model="searchString"
-      @blur="emits('blur')"
     />
     <Icon src="search" class="input-box__icon" />
   </div>
@@ -16,8 +15,6 @@
 import Icon from "./Icon.vue";
 import type { InputProps } from "../../services/types";
 const searchString = defineModel<string>();
-
-const emits =defineEmits(["blur"]);
 
 withDefaults(defineProps<InputProps>(), {
   type: "text",
