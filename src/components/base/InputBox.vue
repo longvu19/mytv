@@ -1,24 +1,31 @@
 <template>
   <label class="label" for="{{id}}" v-if="label">{{ label }}</label>
   <div class="input-box">
-    <input class="input-box__input" :id="id" :type="type" :placeholder="placeholder" v-model="searchString" />
+    <input
+      class="input-box__input"
+      :id="id"
+      :type="type"
+      :placeholder="placeholder"
+      v-model="searchString"
+      @blur="emits('blur')"
+    />
     <Icon src="search" class="input-box__icon" />
   </div>
 </template>
 <script lang="ts" setup>
-import Icon from './Icon.vue';
-import type { InputProps, WatchCallback } from '../../services/types';
-import { debounce } from '../../utils/helper';
-import { watch } from 'vue';
+import Icon from "./Icon.vue";
+import type { InputProps } from "../../services/types";
 const searchString = defineModel<string>();
 
+const emits =defineEmits(["blur"]);
+
 withDefaults(defineProps<InputProps>(), {
-  type: 'text',
-  label: '',
-  placeholder: '',
-  modelValue: '',
-  icon: ''
-})
+  type: "text",
+  label: "",
+  placeholder: "",
+  modelValue: "",
+  icon: "",
+});
 </script>
 <style lang="scss" scoped>
 .label {

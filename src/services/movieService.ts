@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useMovieDetailStore } from "../stores/movie";
-import type { MovieDetailResponse } from "./types";
+import type { MovieDetailResponse, MovieSearchResultResponse } from "./types";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_HOST,
@@ -32,3 +32,21 @@ export const getMovieDetail = async (
     }
   }
 };
+
+export const getMovieSearchResult = async (
+  keyword: string,
+  limit: number = 5
+): Promise<MovieSearchResultResponse> => {
+  try {
+    const response = await api.get<MovieSearchResultResponse>(
+      `v1/api/tim-kiem?keyword=${keyword}&limit=${limit}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch movie search result: ${error.message}`);
+    } else {
+      throw new Error("Failed to fetch movie search result");
+    }
+  }
+}

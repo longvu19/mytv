@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { MovieListInfo } from "../../services/types";
 import Icon from "./Icon.vue";
-import photoPlaceholder from "../../assets/photo.svg?url";
 import { arrayToString } from "../../utils/helper";
+import LazyLoadingImg from "./LazyLoadingImg.vue";
 defineProps<{
   movie: MovieListInfo;
   imgHost: string;
@@ -12,23 +12,26 @@ defineProps<{
 <template>
   <div class="movie-item">
     <div class="movie-item__image">
-      <img
-        v-if="movie.thumb_url"
-        :src="`${imgHost}/${movie.thumb_url}`"
-        alt="" lazy="loading"
+      <LazyLoadingImg
+        :imgSrc="`${imgHost}/${movie.thumb_url}`"
+        :showPlaceholder="movie.thumb_url === null || movie.thumb_url === ''"
+        :imgAlt="movie.name"
       />
-      <img v-else :src="photoPlaceholder" width="100" alt="" />
     </div>
     <div class="movie-item__info">
       <strong class="movie-item__title">{{ movie.name }}</strong>
       <p class="movie-item__meta">{{ arrayToString(movie.category) }}</p>
       <div class="movie-item__play">
-        <RouterLink :to="{ name: 'phim', params: { slug: movie.slug }, force: true }">
+        <RouterLink
+          :to="{ name: 'phim', params: { slug: movie.slug }, force: true }"
+        >
           <Icon src="play" />
         </RouterLink>
       </div>
     </div>
-    <div v-if="movie.episode_current" class="movie-item__eps-tag">{{ movie.episode_current }}</div>
+    <div v-if="movie.episode_current" class="movie-item__eps-tag">
+      {{ movie.episode_current }}
+    </div>
   </div>
 </template>
 
@@ -43,12 +46,6 @@ defineProps<{
   &__image {
     width: 100%;
     height: 100%;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
   }
 
   &:hover {

@@ -1,17 +1,26 @@
 <script lang="ts" setup>
-import Icon from './Icon.vue';
-interface LoadingProps {
-  size?: string
-}
-withDefaults(defineProps<LoadingProps>(), {
-  size: '50px'
-})
+import { ref } from "vue";
+import type { Ref } from "vue";
+import Icon from "./Icon.vue";
+import type { LoadingProps } from "../../services/types";
+const props = withDefaults(defineProps<LoadingProps>(), {
+  size: "50px",
+  type: "spinner",
+});
+const isShowed: Ref<boolean> = ref(true);
+defineExpose({ isShowed });
 </script>
 
 <template>
-  <div class="loading">
-    <div class="loading__spinner">
-      <Icon src="loading" :masking="false" />
+  <div class="loading" v-if="isShowed">
+    <div
+      class="loading__icon"
+      :class="{ 'loading__icon--spinning': props.type === 'spinner' }"
+    >
+      <Icon
+        :src="props.type === 'spinner' ? 'loading' : 'square'"
+        :masking="false"
+      />
     </div>
   </div>
 </template>
@@ -31,14 +40,16 @@ withDefaults(defineProps<LoadingProps>(), {
   opacity: 0.7;
   transition: opacity 1s ease;
 
-  &__spinner {
+  &__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: rotate 2s linear infinite;
     width: v-bind(size);
     height: v-bind(size);
+  }
 
+  &__icon--spinning {
+    animation: rotate 2s linear infinite;
     :deep(.icon) {
       animation: gradient 5s ease infinite;
     }

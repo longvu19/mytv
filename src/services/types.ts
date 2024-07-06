@@ -142,8 +142,20 @@ export interface InputProps {
   icon?: string
 }
 
-export type WatchCallback<T> = (
-  value: T,
-  oldValue: T,
-  onCleanup: (cleanupFn: () => void) => void
-) => void
+export interface MovieSearchResultResponse extends CategoryMoviesResponse{
+  params: {
+    type_slug: string;
+    keyword: string;
+    filterCategory: string[];
+    filterCountry: string[];
+    filterYear: string;
+    filterType: string;
+    sortField: string;
+    sortType: string;
+  }
+}
+
+export interface LoadingProps {
+  size?: string,
+  type?: 'spinner'|'square'
+}

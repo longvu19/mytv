@@ -27,6 +27,13 @@ const routes = [
     component: ()=> import('./pages/MoviePage.vue'),
     name: "phim",
     props: true,
+  },
+  {
+    path: "/tim-kiem",
+    component: ()=> import('./pages/SearchPage.vue'),
+    name: "tim-kiem",
+    query: { k : ""},
+    props: true,
   }
 ];
 const router = createRouter({
