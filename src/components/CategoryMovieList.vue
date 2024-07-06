@@ -34,6 +34,7 @@ const APP_DOMAIN_CDN_IMAGE = await categoryMoiveList.data.APP_DOMAIN_CDN_IMAGE;
   display: flex;
   flex-direction: column;
   padding: 0 60px;
+  min-height: 310px;
 
   &__tilte-container {
     display: flex;

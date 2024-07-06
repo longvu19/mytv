@@ -21,15 +21,13 @@ onUpdated(() => {
 </script>
 <template>
   <Layout>
-    <Suspense timeout="5000">
-      <CategoryMovieGrid
-        :title="category"
-        :slug="router.currentRoute.value.name as string"
-        :page="page"
-      />
-      <template #fallback>
-        <Loading />
-      </template>
-    </Suspense>
+    <Transition name="fade">
+      <Suspense timeout="5000">
+        <CategoryMovieGrid :title="category" :slug="router.currentRoute.value.name as string" :page="page" />
+        <template #fallback>
+          <Loading />
+        </template>
+      </Suspense>
+    </Transition>
   </Layout>
 </template>

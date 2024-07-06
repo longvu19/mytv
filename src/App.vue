@@ -4,13 +4,15 @@ import Loading from "./components/base/Loading.vue";
 
 <template>
   <RouterView v-slot="{ Component }" :key="$route.fullPath">
-    <Suspense>
-      <div>
-        <component :is="Component"/>
-      </div>
-      <template #fallback>
-        <Loading />
-      </template>
-    </Suspense>
+    <Transition name="fade">
+      <Suspense>
+        <div>
+          <component :is="Component" />
+        </div>
+        <template #fallback>
+          <Loading />
+        </template>
+      </Suspense>
+    </Transition>
   </RouterView>
 </template>

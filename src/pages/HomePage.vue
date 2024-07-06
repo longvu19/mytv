@@ -7,24 +7,22 @@ import CategoryMovieList from '../components/CategoryMovieList.vue';
 <template>
   <Layout>
     <Transition name="fade">
-      <Suspense timeout="5000">
-        <FeaturingMovies />
+      <Suspense timeout="5000" :suspensible="false">
+        <template #default>
+          <div>
+            <FeaturingMovies />
+            <div class="categories">
+              <CategoryMovieList title="Phim lẻ" category="phim-le" />
+              <CategoryMovieList title="Phim bộ" category="phim-bo" />
+              <CategoryMovieList title="TV Shows" category="tv-shows" />
+            </div>
+          </div>
+        </template>
         <template #fallback>
           <Loading />
         </template>
       </Suspense>
     </Transition>
-    <Suspense>
-      <template #default>
-        <div class="categories">
-          <CategoryMovieList title="Phim lẻ" category="phim-le" />
-          <CategoryMovieList title="Phim bộ" category="phim-bo" />
-          <CategoryMovieList title="TV Shows" category="tv-shows" />
-        </div>
-      </template>
-      <template #fallback>
-      </template>
-    </Suspense>
   </Layout>
 </template>
 <style lang="scss" scoped>

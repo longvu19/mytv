@@ -37,7 +37,7 @@ defineExpose({ isShowed });
   left: 0;
   z-index: 9999;
   background: #111;
-  opacity: 0.7;
+  opacity: 1;
   transition: opacity 1s ease;
 
   &__icon {

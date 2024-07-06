@@ -5,18 +5,18 @@ import SearchMovieGrid from "../components/SearchMovieGrid.vue";
 import Loading from "../components/base/Loading.vue";
 
 const route = useRoute();
-const keyword : string =  route.query.k as string;
+const keyword: string = route.query.k as string;
 
 </script>
 <template>
   <Layout>
-    <Suspense timeout="5000">
-      <SearchMovieGrid
-        :keyword="keyword"
-      />
-      <template #fallback>
-        <Loading />
-      </template>
-    </Suspense>
+    <Transition name="fade">
+      <Suspense timeout="5000">
+        <SearchMovieGrid :keyword="keyword" />
+        <template #fallback>
+          <Loading />
+        </template>
+      </Suspense>
+    </Transition>
   </Layout>
 </template>
