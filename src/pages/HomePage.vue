@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import Layout from '../components/layout/Layout.vue';
-import FeaturingMovies from '../components/FeaturingMovies.vue';
-import Loading from '../components/base/Loading.vue';
-import CategoryMovieList from '../components/CategoryMovieList.vue';
+import Layout from "../components/layout/Layout.vue";
+import FeaturingMovies from "../components/FeaturingMovies.vue";
+import Loading from "../components/base/Loading.vue";
+import CategoryMovieList from "../components/CategoryMovieList.vue";
 </script>
 <template>
   <Layout>
@@ -15,6 +15,7 @@ import CategoryMovieList from '../components/CategoryMovieList.vue';
               <CategoryMovieList title="Phim lẻ" category="phim-le" />
               <CategoryMovieList title="Phim bộ" category="phim-bo" />
               <CategoryMovieList title="TV Shows" category="tv-shows" />
+              <CategoryMovieList title="Hoạt hình" category="hoat-hinh" />
             </div>
           </div>
         </template>

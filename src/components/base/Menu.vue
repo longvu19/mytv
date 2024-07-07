@@ -14,9 +14,19 @@ const menus = reactive([
     icon: 'movie'
   },
   {
+    name: 'Phim lẻ',
+    path: 'phim-le',
+    icon: 'tape'
+  },
+  {
     name: 'TV Shows',
     path: 'tv-shows',
     icon: 'tv'
+  },
+  {
+    name: 'Hoạt hình',
+    path: 'hoat-hinh',
+    icon: 'cn'
   }
 ]);
 </script>

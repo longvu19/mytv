@@ -9,6 +9,8 @@ export default defineConfig({
     alias: {},
   },
   build: {
-    assetsInlineLimit: 0
+    assetsInlineLimit: 0,
+    minify: 'esbuild',
+    cssMinify: 'esbuild'
   },
 });
