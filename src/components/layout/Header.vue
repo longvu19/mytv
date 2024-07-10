@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import Menu from "../base/Menu.vue";
 import SearchBox from "../base/SearchBox.vue";
+import Button from "../base/Button.vue";
+import Icon from "../base/Icon.vue";
+import { useBreakpoints } from "../../utils/breakpoints";
 
 import { ref, onMounted, computed } from "vue";
 import logo from "/logo-mytv.svg?url";
 
+const breakpoints = useBreakpoints();
 const scrollTop = ref(0);
 const classObject = computed(() => {
   return {
@@ -15,16 +19,23 @@ onMounted(() => {
   window.addEventListener("scroll", () => {
     scrollTop.value = window.scrollY;
   });
+  console.log(breakpoints)
 });
 </script>
 <template>
   <header class="header" :class="classObject">
     <div class="header__left">
       <div class="header__logo">
+        <Button type="button" v-if="breakpoints.isTablet">
+          <Icon src="hamburger"/>
+        </Button>
         <RouterLink to="/" class="header__logo-link">
           <h1>MyTV</h1>
           <img :src="logo" alt="logo" />
         </RouterLink>
+        <Button type="button" v-if="breakpoints.isTablet">
+          <Icon src="search"/>
+        </Button>
       </div>
       <Menu />
     </div>
