@@ -4,6 +4,7 @@ const pinia = createPinia();
 import "./style.css";
 import App from "./App.vue";
 import { createWebHistory, createRouter } from "vue-router";
+import responsive from "./plugins/responsive";
 
 const routes = [
   { path: "/", component: () => import("./pages/HomePage.vue"), name: "home" },
@@ -46,4 +47,4 @@ const router = createRouter({
   routes,
 });
 
-createApp(App).use(pinia).use(router).mount("#app");
+createApp(App).use(pinia).use(router).use(responsive).mount("#app");
