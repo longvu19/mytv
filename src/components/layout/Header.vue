@@ -2,16 +2,26 @@
 import Menu from "../base/Menu.vue";
 import SearchBox from "../base/SearchBox.vue";
 import Button from "../base/Button.vue";
-import Icon from "../base/Icon.vue";
 
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, getCurrentInstance } from "vue";
 import logo from "/logo-mytv.svg?url";
 const scrollTop = ref(0);
+const isMobile = computed(() => {
+  const vueInstance = getCurrentInstance();
+  const isSm = vueInstance?.appContext.config.globalProperties.$isSm.value;
+  const isMd = vueInstance?.appContext.config.globalProperties.$isMd.value;
+  return isSm || isMd;
+});
 const classObject = computed(() => {
   return {
     "header--bg-active": scrollTop.value > 0,
+    'header--mobile': isMobile
   };
 });
+const menuActive = ref(false);
+const toggleMenuMenu = () => {
+  menuActive.value = !menuActive.value;
+}
 onMounted(() => {
   window.addEventListener("scroll", () => {
     scrollTop.value = window.scrollY;
@@ -19,23 +29,38 @@ onMounted(() => {
 });
 </script>
 <template>
-  <header class="header" :class="classObject">
-    <div class="header__left">
+  <header
+    class="header"
+    :class="classObject"
+  >
+    <div
+      class="header__left"
+      :class="{ 'header__left--mobile': isMobile}"
+    >
+      <Button
+        type="button"
+        :noBorder="true"
+        icon="hamburger"
+        v-if="isMobile"
+        @click="toggleMenuMenu"
+      >
+      </Button>
       <div class="header__logo">
-        <Button type="button" v-if="$isSm || $isMd">
-          <Icon src="hamburger" />
-        </Button>
         <RouterLink to="/" class="header__logo-link">
           <h1>MyTV</h1>
-          <img :src="logo" :alt="`${$isSm} || ${$isMd}`" />
+          <img :src="logo" alt="MyTV" />
         </RouterLink>
-        <Button type="button" v-if="$isSm || $isMd">
-          <Icon src="search" />
-        </Button>
       </div>
-      <Menu />
+      <Button
+        type="button"
+        :noBorder="true"
+        icon="search"
+        v-if="isMobile"
+      >
+      </Button>
+      <Menu :active="menuActive" @toggleMenu="toggleMenuMenu"/>
     </div>
-    <div class="header__right">
+    <div class="header__right" :class="{ 'header__right--mobile': isMobile}">
       <SearchBox />
     </div>
   </header>
@@ -54,6 +79,10 @@ onMounted(() => {
   transition: background 0.3s;
   border-bottom: 1px solid rgb(147 147 147);
 
+  &--mobile {
+    padding: 0 10px;
+  }
+
   &--bg-active {
     background: rgb(0, 0, 0, 0.7);
   }
@@ -65,6 +94,28 @@ onMounted(() => {
     justify-content: center;
     gap: 30px;
     height: 100%;
+    flex-shrink: 0;
+  }
+
+  &__left {
+    &--mobile {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  &__right {
+    &--mobile {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      height: 100%;
+      transition: right 0.5s cubic-bezier(0.05, 0.64, 0.02, 1);
+    }
+    &--active {
+      right: 0;
+    }
   }
 
   &__logo {
@@ -76,6 +127,7 @@ onMounted(() => {
     &-link {
       text-decoration: none;
       height: 100%;
+      flex-shrink: 0;
       img {
         height: 100%;
         width: auto;

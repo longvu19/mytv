@@ -1,9 +1,9 @@
-declare module 'vue' {
+declare module "vue" {
   interface ComponentCustomProperties {
-    $isSm: boolean;
-    $isMd: boolean;
-    $isLg: boolean;
-    $isXl: boolean;
+    $isSm: Ref<boolean>;
+    $isMd: Ref<boolean>;
+    $isLg: Ref<boolean>;
+    $isXl: Ref<boolean>;
   }
 }
-export{}
+export {};

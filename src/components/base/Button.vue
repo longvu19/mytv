@@ -1,24 +1,40 @@
 <script lang="ts" setup>
-import Icon from './Icon.vue';
-withDefaults(defineProps<{
-  primary?: boolean,
-  type: 'button' | 'submit' | 'reset',
-  icon?: string | null,
-  disabled?: boolean,
-  size?: 'small' | 'medium' | 'large'
-}>(), {
-  primary: false,
-  type: 'button',
-  icon: null,
-  disabled: false,
-  size: 'medium',
-})
+import Icon from "./Icon.vue";
+withDefaults(
+  defineProps<{
+    primary?: boolean;
+    type: "button" | "submit" | "reset";
+    icon?: string | null;
+    disabled?: boolean;
+    size?: "small" | "medium" | "large";
+    noBorder?: boolean;
+  }>(),
+  {
+    primary: false,
+    type: "button",
+    icon: null,
+    disabled: false,
+    size: "medium",
+    noBorder: false,
+  }
+);
 </script>
 
 <template>
-  <button :type="type" class="button" :class="[{ 'button--primary': primary, 'button--disabled': disabled }, `button--${size}`]">
+  <button
+    :type="type"
+    class="button"
+    :class="[
+      {
+        'button--primary': primary,
+        'button--disabled': disabled,
+        'button--no-border': noBorder,
+      },
+      `button--${size}`,
+    ]"
+  >
     <Icon class="button__icon" v-if="icon" :src="icon" />
-    <span class="button__text">
+    <span class="button__text" v-if="$slots.default">
       <slot></slot>
     </span>
   </button>
@@ -49,7 +65,7 @@ withDefaults(defineProps<{
     background: white;
   }
 
-  &:hover {
+  &:not(.button--no-border):hover {
     background: white;
     color: #111;
 
@@ -74,6 +90,10 @@ withDefaults(defineProps<{
         background: #111;
       }
     }
+  }
+
+  &--no-border {
+    border: none;
   }
   &__icon {
     width: 20px;
@@ -101,12 +121,20 @@ withDefaults(defineProps<{
     height: 50px;
     padding: 0 30px;
     font-size: 1rem;
+    .button__icon {
+      width: 30px;
+      height: 30px;
+    }
   }
 
   &--medium {
     height: 40px;
     padding: 0 20px;
     font-size: 0.9rem;
+    .button__icon {
+      width: 25px;
+      height: 25px;
+    }
   }
 }
 </style>
