@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive,ref } from "vue";
+import { reactive } from "vue";
 import Icon from "./Icon.vue";
 import Button from "./Button.vue";
 const props = defineProps<{
