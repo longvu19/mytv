@@ -109,7 +109,8 @@ const menus = reactive([
     width: 100%;
     top: 0;
     left: -100%;
-    background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%);
+    background: radial-gradient(circle at 24.1% 68.8%, rgba(50, 50, 50,0.4) 0%, rgba(0, 0, 0,0.4) 99.4%);
+    backdrop-filter: blur(15px);
     z-index: 10;
     gap: 50px;
     .main-menu__close {

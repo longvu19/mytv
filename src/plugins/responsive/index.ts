@@ -1,5 +1,5 @@
 import type { App, Plugin } from "vue";
-import { ref } from "vue";
+import { ref, reactive, getCurrentInstance } from "vue";
 const screen = {
   sm: 576,
   md: 768,
@@ -44,3 +44,8 @@ export default {
   },
 } as Plugin;
 export {screen}
+export function useResponsive(){
+  const gp = reactive(getCurrentInstance()?.appContext.config.globalProperties as any);
+  const responsive = reactive({ isSm: gp.$isSm, isMd: gp.$isMd, isLg: gp.$isLg, isXl: gp.$isXl, isXXL: gp.$isXXL }); 
+  return responsive
+}

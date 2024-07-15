@@ -2,16 +2,23 @@
 import Menu from "../base/Menu.vue";
 import SearchBox from "../base/SearchBox.vue";
 import Button from "../base/Button.vue";
-
-import { ref, onMounted, computed, getCurrentInstance } from "vue";
+import { useResponsive } from "../../plugins/responsive";
+import { ref, onMounted, computed, reactive, watch } from "vue";
 import logo from "/logo-mytv.svg?url";
 const scrollTop = ref(0);
-const isMobile = computed(() => {
-  const vueInstance = getCurrentInstance();
-  const isSm = vueInstance?.appContext.config.globalProperties.$isSm.value;
-  const isMd = vueInstance?.appContext.config.globalProperties.$isMd.value;
-  return isSm || isMd;
-});
+const responsive = useResponsive();
+// const isMobile = computed(() => {
+//   const isSm = responsive.isSm;
+//   const isMd = responsive.isMd;
+  
+//   return isSm || isMd;
+// });
+const isMobile = ref(responsive.isSm || responsive.isMd)
+watch(isMobile, () => {
+  console.log(isMobile);
+  
+})
+
 const classObject = computed(() => {
   return {
     "header--bg-active": scrollTop.value > 0,
@@ -78,6 +85,7 @@ onMounted(() => {
   background: rgb(0, 0, 0, 0);
   transition: background 0.3s;
   border-bottom: 1px solid rgb(147 147 147);
+  backdrop-filter: blur(10px);
 
   &--mobile {
     padding: 0 10px;
