@@ -42,13 +42,10 @@ const menus = reactive([
 </script>
 
 <template>
-  <nav
-    class="main-menu"
-    :class="{
-      'main-menu--active': props.active,
-      'main-menu--fixed': $isSm.value || $isMd.value,
-    }"
-  >
+  <nav class="main-menu" :class="{
+    'main-menu--active': props.active,
+    'main-menu--fixed': $isSm.value || $isMd.value || $isLg.value || $isXl.value,
+  }">
     <div class="main-menu__logo">
       <RouterLink to="/" class="main-menu__logo-link">
         <img :src="logo" alt="MyTV" />
@@ -57,10 +54,7 @@ const menus = reactive([
     <Button type="button" class="main-menu__close" :noBorder="true" icon="close" @click="closeMenu" />
     <ul class="main-menu__list">
       <li class="main-menu__item" v-for="(menu, index) in menus" :key="index">
-        <RouterLink
-          :to="{ name: menu.path, state: { category: menu.name }, force: true }"
-          class="main-menu__link"
-        >
+        <RouterLink :to="{ name: menu.path, state: { category: menu.name }, force: true }" class="main-menu__link">
           <Icon :src="menu.icon" class="main-menu__icon" />
           <span>{{ menu.name }}</span>
         </RouterLink>
@@ -89,6 +83,7 @@ const menus = reactive([
 
   &__logo-link {
     height: 100%;
+
     img {
       height: 100%;
     }
@@ -105,19 +100,33 @@ const menus = reactive([
   &--fixed {
     flex-direction: column;
     position: fixed;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     top: 0;
     left: -100%;
-    background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%);
     z-index: 10;
     gap: 50px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 24.1% 68.8%, rgba(50, 50, 50, 0.7) 0%, rgba(0, 0, 0, 0.7) 99.4%);
+      backdrop-filter: blur(15px);
+      z-index: -1;
+    }
+
     .main-menu__close {
       display: block;
     }
+
     .main-menu__logo {
       display: flex;
     }
+
     .main-menu__list {
       flex-direction: column;
       align-items: flex-start;
@@ -126,9 +135,11 @@ const menus = reactive([
       width: 100%;
       padding: 20px;
     }
+
     .main-menu__item {
       height: 30px;
     }
+
     .main-menu__link {
       gap: 30px;
     }

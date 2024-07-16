@@ -60,6 +60,13 @@ withDefaults(defineProps<InputProps>(), {
     &::placeholder {
       color: #424242b0;
     }
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      transition: background-color 5000s ease-in-out 0s;
+      -webkit-text-fill-color: #fff !important;
+    }
   }
 
   &__icon {

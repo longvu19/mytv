@@ -35,7 +35,7 @@ export const getMovieDetail = async (
 
 export const getMovieSearchResult = async (
   keyword: string,
-  limit: number = 5
+  limit: number = 10
 ): Promise<MovieSearchResultResponse> => {
   try {
     const response = await api.get<MovieSearchResultResponse>(
