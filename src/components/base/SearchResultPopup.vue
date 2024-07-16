@@ -9,6 +9,7 @@ import SearchResult from "./SearchResult.vue";
 const props = defineProps<{
   result: MovieSearchResultResponse;
   keyword: string;
+  isMobile?: boolean;
 }>();
 const data: ComputedRef<MovieListInfo[]> = computed(() => {
   return props.result.data.items;
@@ -26,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="search-result">
+  <div class="search-result" :class="{ 'search-result--mobile': props.isMobile }">
     <SearchResult
       class="search-result__list-container"
       :result="data"
@@ -44,35 +45,48 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.search-result {
+$className: "search-result";
+.#{$className} {
   display: flex;
   flex-direction: column;
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  background: #111;
-}
+  background: rgb(17, 17, 17);
+  &--mobile {
+    display: flex;
+    position: static;
+    flex-grow:1;
+    background: transparent;
+    height: calc(100% - 70px);
+    .#{$className}__list-container{
+      max-height: unset;
+      flex-grow: 1;
+    }
+  }
 
-.search-result__list-container{
-  max-height: 380px;
-}
+  &__list-container{
+    max-height: 380px;
+    overflow: auto;
+  }
 
-.search-result__footer {
-  display: flex;
-}
+  &__footer {
+    display: flex;
+  }
 
-.search-result__footer-link {
-  display: block;
-  width: 100%;
-  padding: 10px 0;
-  text-decoration: none;
-  color: white;
-  text-align: center;
-  background: #111;
+  &__footer-link {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    background: rgb(17, 17, 17);
 
-  &:hover {
-    background: #424242;
+    &:hover {
+      background: rgb(64, 64, 64);
+    }
   }
 }
 </style>
