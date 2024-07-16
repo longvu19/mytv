@@ -3,7 +3,7 @@
   import SearchBox from "../base/SearchBox.vue";
   import Button from "../base/Button.vue";
   import { useResponsive } from "../../plugins/responsive";
-  import { ref, onMounted, computed } from "vue";
+  import { ref, onMounted, computed, getCurrentInstance } from "vue";
   import logo from "/logo-mytv.svg?url";
   const scrollTop = ref(0);
   const { $isSm, $isMd, $isLg, $isXl } = useResponsive();
@@ -24,6 +24,8 @@
     searchBoxActive.value = !searchBoxActive.value;
   };
   onMounted(() => {
+    console.log(getCurrentInstance());
+    
     window.addEventListener("scroll", () => {
       scrollTop.value = window.scrollY;
     });

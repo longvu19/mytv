@@ -1,5 +1,5 @@
 import type { App, Plugin } from "vue";
-import { ref, reactive, getCurrentInstance, toRefs, toRef } from "vue";
+import { reactive, getCurrentInstance, toRefs, toRef } from "vue";
 const screen = {
   sm: 576,
   md: 768,
