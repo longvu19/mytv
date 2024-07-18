@@ -3,13 +3,11 @@ import { reactive } from 'vue';
 import { getFeaturingMovies } from '../services/featuringMoviesService';
 import type { FeaturingMovieResponse, MovieInfo } from '../services/types';
 import MasterCarousel from './base/MasterCarousel.vue';
-import {useResponsive} from '../plugins/responsive';
 const options = reactive({ rewind: true, type: 'fade', autoplay: true, lazyLoad: true, speed: 1000,breakpoints: {
 		768: {
 			pagination: false,
 		},
   } });
-const {$isSm, $isMd, $isLg, $isXl, $isXXL} = useResponsive();
 const movies: FeaturingMovieResponse = await getFeaturingMovies();
 const movieItems: MovieInfo[] = await movies.items;
 </script>

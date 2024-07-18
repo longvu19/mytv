@@ -1,4 +1,4 @@
-import { createApp, provide } from "vue";
+import { createApp } from "vue";
 import { createPinia } from "pinia";
 const pinia = createPinia();
 import "./style.css";
