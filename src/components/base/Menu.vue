@@ -46,31 +46,39 @@ const menus = reactive([
     'main-menu--active': props.active,
     'main-menu--fixed': $isSm.value || $isMd.value || $isLg.value || $isXl.value,
   }">
-    <div class="main-menu__logo">
-      <RouterLink to="/" class="main-menu__logo-link">
-        <img :src="logo" alt="MyTV" />
-      </RouterLink>
-    </div>
-    <Button type="button" class="main-menu__close" :noBorder="true" icon="close" @click="closeMenu" />
-    <ul class="main-menu__list">
-      <li class="main-menu__item" v-for="(menu, index) in menus" :key="index">
-        <RouterLink :to="{ name: menu.path, state: { category: menu.name }, force: true }" class="main-menu__link">
-          <Icon :src="menu.icon" class="main-menu__icon" />
-          <span>{{ menu.name }}</span>
+    <div class="main-menu__content">
+      <div class="main-menu__logo" v-if="$isSm.value || $isMd.value || $isLg.value || $isXl.value">
+        <RouterLink to="/" class="main-menu__logo-link">
+          <img :src="logo" alt="MyTV" />
         </RouterLink>
-      </li>
-    </ul>
+      </div>
+      <Button type="button" class="main-menu__close" :noBorder="true" icon="close" @click="closeMenu" v-if="$isSm.value || $isMd.value || $isLg.value || $isXl.value" />
+      <ul class="main-menu__list">
+        <li class="main-menu__item" v-for="(menu, index) in menus" :key="index">
+          <RouterLink :to="{ name: menu.path, state: { category: menu.name }, force: true }" class="main-menu__link">
+            <Icon :src="menu.icon" class="main-menu__icon" />
+            <span>{{ menu.name }}</span>
+          </RouterLink>
+        </li>
+      </ul>
+    </div>
   </nav>
 </template>
 
 <style lang="scss" scoped>
-.main-menu {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+$className : ".main-menu";
+
+#{$className} {
   height: 100%;
   transition: left 0.25s cubic-bezier(0.05, 0.64, 0.02, 1);
   position: static;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: inherit;
+  }
 
   &__logo {
     display: none;
@@ -78,7 +86,6 @@ const menus = reactive([
     justify-content: center;
     height: 80px;
     width: auto;
-    margin-top: 100px;
   }
 
   &__logo-link {
@@ -98,49 +105,59 @@ const menus = reactive([
   }
 
   &--fixed {
-    flex-direction: column;
     position: fixed;
-    height: 100vh;
     width: 100%;
     top: 0;
     left: -100%;
     z-index: 10;
-    gap: 50px;
+    overflow: auto;
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 24.1% 68.8%, rgba(50, 50, 50, 0.7) 0%, rgba(0, 0, 0, 0.7) 99.4%);
-      backdrop-filter: blur(15px);
-      z-index: -1;
+    #{$className}__content {
+      padding-top: 100px;
+      flex-direction: column;
+      height: fit-content;
+      min-height: 100%;
+      justify-content: flex-start;
+      gap: 50px;
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background: radial-gradient(circle at 24.1% 68.8%, rgba(50, 50, 50, 0.7) 0%, rgba(0, 0, 0, 0.7) 99.4%);
+        backdrop-filter: blur(15px);
+        z-index: -1;
+      }
     }
 
-    .main-menu__close {
+
+    #{$className}__close {
       display: block;
     }
 
-    .main-menu__logo {
+    #{$className}__logo {
       display: flex;
     }
 
-    .main-menu__list {
+    #{$className}__list {
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
       gap: 20px;
       width: 100%;
       padding: 20px;
+      height: auto;
     }
 
-    .main-menu__item {
+    #{$className}__item {
       height: 30px;
     }
 
-    .main-menu__link {
+    #{$className}__link {
       gap: 30px;
     }
   }
@@ -174,7 +191,7 @@ const menus = reactive([
     gap: 10px;
     transition: color 0.25s;
 
-    .main-menu__icon {
+    #{$className}__icon {
       height: 25px;
       width: 25px;
       transition: background 0.25s;
@@ -183,7 +200,7 @@ const menus = reactive([
     &:hover {
       color: #df5f2d;
 
-      .main-menu__icon {
+      #{$className}__icon {
         background: #df5f2d;
       }
     }
