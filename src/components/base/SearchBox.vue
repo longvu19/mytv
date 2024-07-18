@@ -29,6 +29,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: "closePopup"): void;
+  (e: "activeSearchBox") : void
 }>();
 
 function closeSearchBox() {
@@ -40,12 +41,15 @@ watch(
   debounce(async () => {
     if (searchString.value !== "")
       searchResult.value = await getMovieSearchResult(searchString.value);
+      emits("closePopup");
+      emits("activeSearchBox");
   }, 300)
 );
 
 function closePopupHandler(event: Event): void {
-  if (searchBox.value?.contains(event.target as Node))
+  if (!searchBox.value?.contains(event.target as Node)) {
     searchResult.value = null;
+  }
 }
 
 function submitSearchHandler() {

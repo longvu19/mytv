@@ -22,17 +22,22 @@ const emits = defineEmits<{
 onMounted(() => {
   window.addEventListener("click", (e) => {
     emits("closePopup", e);
+  }, {
+    once: true
   })
 })
 </script>
 
 <template>
   <div class="search-result" :class="{ 'search-result--mobile': props.isMobile }">
-    <SearchResult
-      class="search-result__list-container"
-      :result="data"
-      :imgHost="props.result.data.APP_DOMAIN_CDN_IMAGE"
-    />
+    <div class="search-result__list-container">
+      <SearchResult
+        :result="data"
+        :imgHost="props.result.data.APP_DOMAIN_CDN_IMAGE"
+        v-if="data.length > 0"
+      />
+      <div v-else class="search-result__no-result">Không tìm thấy kết quả cho "{{ keyword }}"</div>
+    </div>
     <div class="search-result__footer">
       <RouterLink
         :to="{ name: 'tim-kiem', query: { k: keyword } }"
@@ -54,6 +59,17 @@ $className: "search-result";
   left: 0;
   width: 100%;
   background: rgb(17, 17, 17);
+
+  &__no-result {
+    text-align: center;
+    color: white;
+    padding: 10px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &--mobile {
     display: flex;
     position: static;
@@ -63,6 +79,10 @@ $className: "search-result";
     .#{$className}__list-container{
       max-height: unset;
       flex-grow: 1;
+    }
+
+    .#{$className}__no-result{
+      height: 100%;
     }
   }
 

@@ -16,3 +16,7 @@ export function debounce(func: Function, duration: number) : any {
     timeout = setTimeout(effect, duration);
   }
 }
+
+export function lockScroll(state : boolean = true) :void {
+  document.body.style.overflow = state ? "hidden" : "";
+}

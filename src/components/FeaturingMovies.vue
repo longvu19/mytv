@@ -3,8 +3,11 @@ import { reactive } from 'vue';
 import { getFeaturingMovies } from '../services/featuringMoviesService';
 import type { FeaturingMovieResponse, MovieInfo } from '../services/types';
 import MasterCarousel from './base/MasterCarousel.vue';
-const options = reactive({ rewind: true, type: 'fade', autoplay: true, lazyLoad: true, speed: 1000 });
-
+const options = reactive({ rewind: true, type: 'fade', autoplay: true, lazyLoad: true, speed: 1000,breakpoints: {
+		768: {
+			pagination: false,
+		},
+  } });
 const movies: FeaturingMovieResponse = await getFeaturingMovies();
 const movieItems: MovieInfo[] = await movies.items;
 </script>
@@ -22,6 +25,10 @@ const movieItems: MovieInfo[] = await movies.items;
   position: relative;
   transition: opacity 1s ease;
   margin-bottom: 50px;
+
+  @media (max-width: 768px) {
+    height: 500px;
+  }
 
   &__banner {
     position: absolute;

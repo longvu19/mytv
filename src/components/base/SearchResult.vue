@@ -57,15 +57,15 @@ const props = defineProps<{
     display: flex;
     align-items: center;
     width: 100%;
-    height: 75px;
+    min-height: 75px;
     text-decoration: none;
     gap: 10px;
   }
 
   &__item-poster {
     flex-shrink: 0;
-    width: 50px;
-    height: 100%;
+    width: 70px;
+    height: 75px;
     position: relative;
 
     img {
