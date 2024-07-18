@@ -48,14 +48,25 @@ defineProps<{
     padding: 20px;
     color: white;
     gap: 10px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 
   &__title {
     font-size: 2.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
   }
 
   &__o-title {
     font-size: 1.5rem;
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
   }
 
   &__button {
@@ -118,6 +129,9 @@ defineProps<{
     gap: 10px;
     align-items: center;
     justify-self: center;
+    @media (max-width: 345px) {
+      right: 20px;
+    }
   }
 
   :deep(.splide__arrow) {
