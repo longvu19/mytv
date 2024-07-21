@@ -15,5 +15,8 @@
   margin: 0;
   text-transform: uppercase;
   color: #fff;
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+  }
 }
 </style>
