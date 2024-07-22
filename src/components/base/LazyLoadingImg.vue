@@ -5,7 +5,7 @@ import { ref, computed, watch } from "vue";
 import type { Ref, ComputedRef } from "vue";
 const props = defineProps<{
   imgSrc: string;
-  showPlaceholder: boolean;
+  showPlaceholder?: boolean;
   imgAlt: string;
 }>();
 const isImgLoaded: Ref<boolean | null> = ref(null);
@@ -32,16 +32,18 @@ watch(isImgLoaded, () => {
 });
 </script>
 <template>
-  <img
-    v-show="isImgLoaded"
-    :src="src"
-    :alt="props.imgAlt"
-    @load="imgLoadedHandler"
-    @error="imgLoadedFailedHandler"
-    lazy="loading"
-    ref="imgRef"
-  />
-  <Loading v-show="!isImgLoaded" size="30px" type="square" ref="loadingRef" />
+  <div>
+    <img
+      v-show="isImgLoaded"
+      :src="src"
+      :alt="props.imgAlt"
+      @load="imgLoadedHandler"
+      @error="imgLoadedFailedHandler"
+      lazy="loading"
+      ref="imgRef"
+    />
+    <Loading v-show="!isImgLoaded" size="30px" type="square" ref="loadingRef" />
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -49,5 +51,8 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.loading {
+  z-index: 1;
 }
 </style>

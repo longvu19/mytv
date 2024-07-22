@@ -22,7 +22,6 @@ const renderPages = computed(() => {
   } else if (props.currentPage >= props.totalPages - 3) {
     start = props.totalPages - 3;
   }
-  console.log(Array.from({ length: 3 }, (_, i) => i + start));
   return Array.from({ length: 3 }, (_, i) => i + start);
 });
 const activeClass = "pagination__item--active";

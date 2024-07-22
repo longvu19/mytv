@@ -37,6 +37,9 @@ const movies: CategoryMoviesResponse = await getCategoryMovies(
 <style lang="scss" scoped>
 .category-movie {
   padding: 100px 30px 0;
+  @media (max-width: 768px) {
+    padding: 100px 20px 0;
+  }
 
   &__title {
     margin-bottom: 30px;

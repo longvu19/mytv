@@ -14,7 +14,7 @@ const epList: string[] = epData.map((ep: Episode) => ep.slug);
 <template>
   <ul class="movie-episodes">
     <li class="movie-episodes__item" v-for="(index) in totalEp" :key="index">
-      <RouterLink :to="{ name: route.name, params: { ...route.params, ...{ ep: epList[index-1] } }, force: true }" class="movie-episodes__link" :class="{ 'movie-episodes__link--active': index === currentEp + 1, 'movie-episodes__link--disable': epData[index-1] === undefined }">
+      <RouterLink :to="{ name: route.name, params: { ...route.params, ...{ ep: epList[index - 1] } }, force: true }" class="movie-episodes__link" :class="{ 'movie-episodes__link--active': index === currentEp + 1, 'movie-episodes__link--disable': epData[index - 1] === undefined }">
         {{ index }}
       </RouterLink>
     </li>
@@ -23,17 +23,31 @@ const epList: string[] = epData.map((ep: Episode) => ep.slug);
 
 <style lang="scss" scoped>
 .movie-episodes {
-  display: flex;
+
   list-style: none;
   padding: 0;
   margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 30px);
+  grid-auto-rows: 30px;
   gap: 10px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, 35px);
+    grid-auto-rows: 35px;
+    gap: 15px;
+  }
 
   &__item {
     flex: 0 0 auto;
     width: 30px;
     height: 30px;
+
+    @media (max-width: 768px) {
+      width: 35px;
+      height: 35px;
+    }
   }
 
   &__link {

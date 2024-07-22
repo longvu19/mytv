@@ -8,6 +8,7 @@ import Layout from "../components/layout/Layout.vue";
 import MoviePlayer from "../components/base/MoviePlayer.vue";
 import MovieMeta from "../components/base/MovieMeta.vue";
 import EpisodeList from "../components/base/EpisodeList.vue";
+import LazyLoadingImg from "../components/base/LazyLoadingImg.vue";
 import { getMovieDetail } from "../services/movieService";
 import type {
   MovieDetailResponse,
@@ -39,7 +40,7 @@ const verified_url = computed(async () => {
     return photoPlaceholder.default;
   }
 })
-const poster_url : Ref<string> = ref('')
+const poster_url: Ref<string> = ref('')
 onMounted(async () => {
   poster_url.value = await verified_url.value;
 });
@@ -48,7 +49,7 @@ onMounted(async () => {
 
 <template>
   <Layout>
-    <MoviePlayer class="movie-player" :link="currentEpLink" :thumb="movie.thumb_url" />
+    <MoviePlayer class="movie-player" :link="currentEpLink" v-if="currentEpLink" :thumb="movie.thumb_url" />
     <div class="movie-info">
       <div class="movie-info__episodes">
         <strong class="movie-info__episodes-title">Danh sách tập</strong>
@@ -56,9 +57,9 @@ onMounted(async () => {
       </div>
       <h2 class="movie-info__title">{{ movie.name }}</h2>
       <div class="movie-info__content">
-        <div class="movie-info__left">
+        <div class="movie-info__left" v-if="!$isMd.value && !$isSm.value">
           <div class="movie-info__poster">
-            <img class="movie-info__poster-img" :src="poster_url" :alt="movie.name" lazy="loading" />
+            <LazyLoadingImg class="movie-info__poster-img" :imgSrc="poster_url" :imgAlt="movie.name" />
           </div>
         </div>
         <div class="movie-info__right">
@@ -81,6 +82,10 @@ onMounted(async () => {
     font-size: 2rem;
     font-weight: 600;
     margin-top: 20px;
+
+    @media (max-width: 768px) {
+      margin-top: 30px;
+    }
   }
 
   &__content {
@@ -94,7 +99,7 @@ onMounted(async () => {
   }
 
   &__right {
-    flex: 0 0 70%;
+    flex: 1 0 70%;
   }
 
   &__poster {
@@ -113,6 +118,10 @@ onMounted(async () => {
 
   &__episodes {
     margin-top: 20px;
+
+    @media (max-width: 768px) {
+      margin-top: 0;
+    }
   }
 
   &__episodes-title {

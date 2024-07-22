@@ -139,7 +139,8 @@ export interface InputProps {
   type: string,
   placeholder?: string,
   modelValue?: string,
-  icon?: string
+  icon?: string,
+  iconClickHandler?: (...args: any[]) => any
 }
 
 export interface MovieSearchResultResponse extends CategoryMoviesResponse{
