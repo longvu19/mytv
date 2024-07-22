@@ -60,6 +60,10 @@ withDefaults(
   text-transform: uppercase;
   outline: none;
   user-select: none;
+  @media (max-width: 768px) {
+    height: 30px;
+    padding: 0 15px;
+  }
 
   :deep(.icon) {
     background: white;
@@ -101,7 +105,7 @@ withDefaults(
   }
 
   &__text {
-    font-size: 0.9rem;
+    font-size: inherit;
     font-weight: 500;
     text-transform: uppercase;
   }
@@ -115,6 +119,10 @@ withDefaults(
     height: 30px;
     padding: 0 10px;
     font-size: 0.8rem;
+    @media (max-width: 768px) {
+      height: 25px;
+      font-size: 0.7rem;
+    }
   }
 
   &--large {
@@ -124,6 +132,15 @@ withDefaults(
     .button__icon {
       width: 30px;
       height: 30px;
+    }
+    @media (max-width: 768px) {
+      height: 40px;
+      font-size: 0.9rem;
+      padding: 0 20px;
+      .button__icon {
+        width: 25px;
+        height: 25px;
+      }
     }
   }
 

@@ -129,7 +129,7 @@ defineProps<{
     gap: 10px;
     align-items: center;
     justify-self: center;
-    @media (max-width: 345px) {
+    @media (max-width: 768px) {
       right: 20px;
     }
   }

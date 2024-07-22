@@ -1,15 +1,14 @@
 <template>
-  <Splide v-if="movies" class="movie-list" :options="options">
+  <SplideTrack v-if="movies" class="movie-list">
     <template v-for="movie in movies" :key="movie.id">
       <SplideSlide class="movie-list__item">
         <MovieItem :movie="movie" :img-host="imgHost" />
       </SplideSlide>
     </template>
-  </Splide>
+  </SplideTrack>
 </template>
 <script lang="ts" setup>
-import { reactive } from 'vue';
-import { Splide, SplideSlide } from '@splidejs/vue-splide';
+import { SplideTrack, SplideSlide } from '@splidejs/vue-splide';
 import MovieItem from './MovieItem.vue';
 import type { MovieListInfo } from '../../services/types';
 defineProps<{
@@ -17,14 +16,9 @@ defineProps<{
   imgHost: string;
 }>()
 
-const options = reactive({ type: 'slide', drag: 'free', wheel: true, perPage: 1, lazyLoad: true, autoWidth: true, speed: 300, gap: "20px", pagination: false, waitForTransition: true })
-
 </script>
 <style lang="scss" scoped>
 .movie-list {
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
   margin-top: 30px;
 
   :deep(.splide__arrow--prev) {
@@ -40,6 +34,9 @@ const options = reactive({ type: 'slide', drag: 'free', wheel: true, perPage: 1,
     position: relative;
     overflow: hidden;
     height: 250px;
+    @media (max-width: 425px) {
+      flex: 0 0 100%;
+    }
   }
 }
 </style>

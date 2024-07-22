@@ -38,7 +38,7 @@ onMounted(() => {
       />
       <div v-else class="search-result__no-result">Không tìm thấy kết quả cho "{{ keyword }}"</div>
     </div>
-    <div class="search-result__footer">
+    <div class="search-result__footer" v-if="data.length > 0">
       <RouterLink
         :to="{ name: 'tim-kiem', query: { k: keyword } }"
         class="search-result__footer-link"

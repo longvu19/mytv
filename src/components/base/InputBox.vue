@@ -8,7 +8,7 @@
       :placeholder="placeholder"
       v-model="searchString"
     />
-    <Icon src="search" class="input-box__icon" />
+    <Icon :src="icon" v-if="icon" class="input-box__icon" @click="iconClickHandler"/>
   </div>
 </template>
 <script lang="ts" setup>
@@ -22,6 +22,7 @@ withDefaults(defineProps<InputProps>(), {
   placeholder: "",
   modelValue: "",
   icon: "",
+  iconClickHandler: () => {},
 });
 </script>
 <style lang="scss" scoped>
