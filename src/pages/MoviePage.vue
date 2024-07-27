@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watchEffect, computed, onMounted } from "vue";
+import { ref, watchEffect, computed } from "vue";
 import type { Ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
@@ -40,10 +40,7 @@ const verified_url = computed(async () => {
     return photoPlaceholder.default;
   }
 })
-const poster_url: Ref<string> = ref('')
-onMounted(async () => {
-  poster_url.value = await verified_url.value;
-});
+const poster_url:string = await verified_url.value;
 
 </script>
 

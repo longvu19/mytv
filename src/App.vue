@@ -1,7 +1,5 @@
 <script setup lang="ts">
-// import {ref} from "vue";
 import Loading from "./components/base/Loading.vue";
-// const isScrollLocked = ref(false);
 </script>
 
 <template>
