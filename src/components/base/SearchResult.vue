@@ -10,29 +10,17 @@ const props = defineProps<{
 
 <template>
   <ul class="search-result-list">
-    <li
-      v-for="movie in props.result"
-      :key="movie.id"
-      class="search-result-list__item"
-    >
-      <RouterLink
-        :to="{ name: 'phim', params: { slug: movie.slug } }"
-        class="search-result-list__item-link"
-      >
+    <li v-for="movie in props.result" :key="movie.id" class="search-result-list__item">
+      <RouterLink :to="{ name: 'phim', params: { slug: movie.slug } }" class="search-result-list__item-link">
         <span class="search-result-list__item-poster">
-          <LazyLoadingImg
-            :imgSrc="`${imgHost}/${movie.poster_url}`"
-            :showPlaceholder="
-              movie.poster_url === null || movie.poster_url === ''
-            "
-            :imgAlt="movie.name"
-          />
+          <LazyLoadingImg :imgSrc="`${imgHost}/${movie.poster_url}`" :showPlaceholder="movie.poster_url === null || movie.poster_url === ''
+      " :imgAlt="movie.name" />
         </span>
         <span class="search-result-list__item-title">
           <span class="search-result-list__item-name">{{ movie.name }}</span>
           <span class="search-result-list__item-o-name">{{
-            movie.origin_name
-          }}</span>
+      movie.origin_name
+    }}</span>
         </span>
       </RouterLink>
     </li>
@@ -43,11 +31,13 @@ const props = defineProps<{
 .search-result-list {
   display: flex;
   flex-direction: column;
+
   &__item {
     display: block;
     width: 100%;
     border-bottom: 1px solid #424242;
     transition: background 0.25s;
+
     &:hover {
       background: #424242;
     }
@@ -67,6 +57,7 @@ const props = defineProps<{
     width: 70px;
     align-self: stretch;
     position: relative;
+    contain: strict;
 
     img {
       width: 100%;

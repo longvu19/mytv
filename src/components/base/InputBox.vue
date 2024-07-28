@@ -7,6 +7,7 @@
       :type="type"
       :placeholder="placeholder"
       v-model="searchString"
+      autocomplete="off"
     />
     <Icon :src="icon" v-if="icon" class="input-box__icon" @click="iconClickHandler"/>
   </div>

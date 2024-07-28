@@ -1,18 +1,23 @@
 <script lang="ts" setup>
 import { computed, onMounted } from "vue";
-import type { ComputedRef } from "vue";
+import { ComputedRef, onUnmounted } from "vue";
+import { getMovieSearchResult } from "../../services/movieService";
 import type {
   MovieSearchResultResponse,
   MovieListInfo,
 } from "../../services/types";
 import SearchResult from "./SearchResult.vue";
 const props = defineProps<{
-  result: MovieSearchResultResponse;
   keyword: string;
   isMobile?: boolean;
 }>();
+const abortController = new AbortController();
+onUnmounted(() => {
+  abortController.abort();
+})
+const searchResult: MovieSearchResultResponse | null = await getMovieSearchResult(props.keyword, 10, abortController);
 const data: ComputedRef<MovieListInfo[]> = computed(() => {
-  return props.result.data.items;
+  return searchResult ? searchResult.data.items : [];
 });
 
 const emits = defineEmits<{
@@ -29,20 +34,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="search-result" :class="{ 'search-result--mobile': props.isMobile }">
+  <div v-if="searchResult" class="search-result" :class="{ 'search-result--mobile': props.isMobile }">
     <div class="search-result__list-container">
-      <SearchResult
-        :result="data"
-        :imgHost="props.result.data.APP_DOMAIN_CDN_IMAGE"
-        v-if="data.length > 0"
-      />
+      <SearchResult :result="data" :imgHost="searchResult.data.APP_DOMAIN_CDN_IMAGE" v-if="data.length > 0" />
       <div v-else class="search-result__no-result">Không tìm thấy kết quả cho "{{ keyword }}"</div>
     </div>
     <div class="search-result__footer" v-if="data.length > 0">
-      <RouterLink
-        :to="{ name: 'tim-kiem', query: { k: keyword } }"
-        class="search-result__footer-link"
-      >
+      <RouterLink :to="{ name: 'tim-kiem', query: { k: keyword } }" class="search-result__footer-link">
         Xem thêm
       </RouterLink>
     </div>
@@ -51,6 +49,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 $className: "search-result";
+
 .#{$className} {
   display: flex;
   flex-direction: column;
@@ -73,20 +72,21 @@ $className: "search-result";
   &--mobile {
     display: flex;
     position: static;
-    flex-grow:1;
+    flex-grow: 1;
     background: transparent;
     height: calc(100% - 70px);
-    .#{$className}__list-container{
+
+    .#{$className}__list-container {
       max-height: unset;
       flex-grow: 1;
     }
 
-    .#{$className}__no-result{
+    .#{$className}__no-result {
       height: 100%;
     }
   }
 
-  &__list-container{
+  &__list-container {
     max-height: 380px;
     overflow: auto;
   }
@@ -98,7 +98,7 @@ $className: "search-result";
   &__footer-link {
     display: block;
     width: 100%;
-    padding: 10px 0;
+    padding: 20px 0;
     text-decoration: none;
     color: white;
     text-align: center;
