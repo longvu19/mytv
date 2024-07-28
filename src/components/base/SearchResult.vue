@@ -65,7 +65,7 @@ const props = defineProps<{
   &__item-poster {
     flex-shrink: 0;
     width: 70px;
-    height: 75px;
+    align-self: stretch;
     position: relative;
 
     img {

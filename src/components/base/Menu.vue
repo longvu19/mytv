@@ -107,6 +107,7 @@ $className : ".main-menu";
   &--fixed {
     position: fixed;
     width: 100%;
+    height: 100dvh;
     top: 0;
     left: -100%;
     z-index: 10;
@@ -130,6 +131,7 @@ $className : ".main-menu";
         width: 100%;
         background: radial-gradient(circle at 24.1% 68.8%, rgba(50, 50, 50, 0.7) 0%, rgba(0, 0, 0, 0.7) 99.4%);
         backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
         z-index: -1;
       }
     }

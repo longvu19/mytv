@@ -119,7 +119,7 @@ onMounted(() => {
       top: 0;
       right: -100%;
       width: 100%;
-      height: 100%;
+      height: 100dvh;
       transition: right 0.5s cubic-bezier(0.05, 0.64, 0.02, 1);
       align-items: flex-start;
       background: rgb(0, 0, 0, 0.7);
