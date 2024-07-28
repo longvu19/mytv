@@ -58,6 +58,10 @@ withDefaults(defineProps<InputProps>(), {
     flex-grow: 1;
     transition: color 0.25s;
 
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+
     &::placeholder {
       color: #424242b0;
     }

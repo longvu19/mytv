@@ -18,34 +18,40 @@ const props = defineProps<{
   ep?: string;
 }>();
 const movieResponse: MovieDetailResponse = await getMovieDetail(props.slug);
-const { movie, episodes } = movieResponse;
+const { movie, episodes, status } = movieResponse;
 const currentEpLink: Ref<string> = ref('');
 const currentEpNum: Ref<number> = ref(0);
+const poster_url : Ref<string> = ref('');
+if (!status) {
+  alert("Phim đang được cập nhật");
+  router.push({ name: "home" });
+} else {
 
-watchEffect(() => {
-  let ep = props.ep ? episodes[0].server_data.find(episode => episode.slug === props.ep) : episodes[0].server_data[0];
-  if (ep) {
-    currentEpLink.value = ep.link_m3u8;
-    currentEpNum.value = episodes[0].server_data.indexOf(ep);
-  } else {
-    alert("Chưa có tập phim này");
-    router.push({ name: route.name, params: { ...route.params, ...{ ep: episodes[0].server_data[0].slug } }, force: true });
-  }
-})
-const verified_url = computed(async () => {
-  if (movie.poster_url) {
-    return movie.poster_url;
-  } else {
-    const photoPlaceholder = await import("../assets/photo.svg?url");
-    return photoPlaceholder.default;
-  }
-})
-const poster_url:string = await verified_url.value;
 
+  watchEffect(() => {
+    let ep = props.ep ? episodes[0].server_data.find(episode => episode.slug === props.ep) : episodes[0].server_data[0];
+    if (ep) {
+      currentEpLink.value = ep.link_m3u8;
+      currentEpNum.value = episodes[0].server_data.indexOf(ep);
+    } else {
+      alert("Chưa có tập phim này");
+      router.push({ name: route.name, params: { ...route.params, ...{ ep: episodes[0].server_data[0].slug } }, force: true });
+    }
+  })
+  const verified_url = computed(async () => {
+    if (movie.poster_url) {
+      return movie.poster_url;
+    } else {
+      const photoPlaceholder = await import("../assets/photo.svg?url");
+      return photoPlaceholder.default;
+    }
+  })
+  poster_url.value = await verified_url.value;
+}
 </script>
 
 <template>
-  <Layout>
+  <Layout v-if="status">
     <MoviePlayer class="movie-player" :link="currentEpLink" v-if="currentEpLink" :thumb="movie.thumb_url" />
     <div class="movie-info">
       <div class="movie-info__episodes">

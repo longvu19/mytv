@@ -38,7 +38,7 @@ ol {
 /* Set core body defaults */
 body {
   font-family: "Noto Sans", sans-serif;
-  min-height: 100vh;
+  min-height: 100dvh;
   font-weight: 200;
   line-height: 1.5;
   background: #111111;
