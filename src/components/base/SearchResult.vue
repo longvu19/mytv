@@ -71,6 +71,7 @@ const props = defineProps<{
     flex-direction: column;
     gap: 5px;
     flex-grow: 1;
+    padding-right: 10px;
   }
 
   &__item-name {

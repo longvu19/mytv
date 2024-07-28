@@ -40,7 +40,7 @@ onMounted(() => {
       <div v-else class="search-result__no-result">Không tìm thấy kết quả cho "{{ keyword }}"</div>
     </div>
     <div class="search-result__footer" v-if="data.length > 0">
-      <RouterLink :to="{ name: 'tim-kiem', query: { k: keyword } }" class="search-result__footer-link">
+      <RouterLink :to="{ name: 'tim-kiem', query: { k: keyword } }" class="search-result__footer-link" :class="{ 'search-result__footer-link--mobile': props.isMobile }">
         Xem thêm
       </RouterLink>
     </div>
@@ -98,11 +98,15 @@ $className: "search-result";
   &__footer-link {
     display: block;
     width: 100%;
-    padding: 20px 0;
+    padding: 10px 0;
     text-decoration: none;
     color: white;
     text-align: center;
     background: rgb(17, 17, 17);
+
+    &--mobile {
+      padding: 20px 0;
+    }
 
     &:hover {
       background: rgb(64, 64, 64);

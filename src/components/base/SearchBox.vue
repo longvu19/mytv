@@ -1,14 +1,14 @@
 <template>
   <div class="search-box" ref="searchBox">
     <form @submit.prevent="submitSearchHandler" method="get">
-      <InputBox id="searchInput" type="text" v-model="searchString" placeholder="Tìm kiếm" icon="search" :iconClickHandler="submitSearchHandler" />
+      <InputBox id="searchInput" type="text" v-model="searchString" @focus="activeSearchBox" placeholder="Tìm kiếm" icon="search" :iconClickHandler="submitSearchHandler" />
       <Button type="button" class="search-box__close-button" :noBorder="true" icon="close" v-if="isMobile" @click="closeSearchBox">
       </Button>
     </form>
     <Suspense v-if="keyword" :key="keyword">
       <SearchResultPopup :keyword="keyword" @closePopup="closePopupHandler" :isMobile="props.isMobile" />
       <template #fallback>
-        <Loading class="search-box__loading" size="30px" type="square" />
+        <Loading class="search-box__loading" :class="{ 'search-box__loading--mobile': props.isMobile }" size="30px" type="square" />
       </template>
     </Suspense>
   </div>
@@ -33,6 +33,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: "closePopup"): void;
+  (e: "activeSearchBox"): void;
 }>();
 
 function closeSearchBox() {
@@ -49,8 +50,12 @@ watch(
 
 function closePopupHandler(event: Event): void {
   if (!searchBox.value?.contains(event.target as Node)) {
-    // searchResult.value = null;
+    keyword.value = '';
   }
+}
+
+function activeSearchBox():void {
+  emits("activeSearchBox");
 }
 
 function submitSearchHandler() {
@@ -79,7 +84,14 @@ function submitSearchHandler() {
   }
 
   &__loading {
-    position: relative;
+    min-height: 424px;
+    top: 100%;
+
+    &--mobile {
+      min-height: unset;
+      position: relative;
+      top: unset;
+    }
   }
 
   &--mobile {
