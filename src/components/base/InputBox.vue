@@ -1,7 +1,7 @@
 <template>
   <label class="label" for="{{id}}" v-if="label">{{ label }}</label>
   <div class="input-box">
-    <input class="input-box__input" :id="id" :type="type" :placeholder="placeholder" v-model="searchString" autocomplete="off" @focus="inputFocusHandler" />
+    <input class="input-box__input" :id="id" :type="type" @blur="inputBlurHandler" :placeholder="placeholder" v-model="searchString" autocomplete="off" @focus="inputFocusHandler" />
     <Icon :src="icon" v-if="icon" class="input-box__icon" @click="iconClickHandler" />
   </div>
 </template>
@@ -9,7 +9,10 @@
 import Icon from "./Icon.vue";
 import type { InputProps } from "../../services/types";
 const searchString = defineModel<string>();
-const emits = defineEmits<{ (e: "focus"): void }>();
+const emits = defineEmits<{
+  (e: "focus"): void,
+  (e: "blur"): void
+}>();
 
 withDefaults(defineProps<InputProps>(), {
   type: "text",
@@ -21,6 +24,9 @@ withDefaults(defineProps<InputProps>(), {
 });
 const inputFocusHandler = () => {
   emits("focus");
+}
+const inputBlurHandler = () => {
+  emits("blur");
 }
 </script>
 <style lang="scss" scoped>

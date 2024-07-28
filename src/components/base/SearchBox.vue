@@ -1,7 +1,7 @@
 <template>
   <div class="search-box" ref="searchBox">
     <form @submit.prevent="submitSearchHandler" method="get">
-      <InputBox id="searchInput" type="text" v-model="searchString" @focus="activeSearchBox" placeholder="Tìm kiếm" icon="search" :iconClickHandler="submitSearchHandler" />
+      <InputBox id="searchInput" type="text" v-model="searchString" @focus="activeSearchBox" @blur="deactiveSearchBox" placeholder="Tìm kiếm" icon="search" :iconClickHandler="submitSearchHandler" />
       <Button type="button" class="search-box__close-button" :noBorder="true" icon="close" v-if="isMobile" @click="closeSearchBox">
       </Button>
     </form>
@@ -34,6 +34,7 @@ const props = defineProps<{
 const emits = defineEmits<{
   (e: "closePopup"): void;
   (e: "activeSearchBox"): void;
+  (e: "deactiveSearchBox"): void;
 }>();
 
 function closeSearchBox() {
@@ -56,6 +57,10 @@ function closePopupHandler(event: Event): void {
 
 function activeSearchBox():void {
   emits("activeSearchBox");
+}
+
+function deactiveSearchBox():void {
+  emits("deactiveSearchBox");
 }
 
 function submitSearchHandler() {
