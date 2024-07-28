@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { CanceledError } from "axios";
 import { useMovieDetailStore } from "../stores/movie";
 import type { MovieDetailResponse, MovieSearchResultResponse } from "./types";
 
@@ -35,14 +35,20 @@ export const getMovieDetail = async (
 
 export const getMovieSearchResult = async (
   keyword: string,
-  limit: number = 10
-): Promise<MovieSearchResultResponse> => {
+  limit: number = 10,
+  abortController?: AbortController
+): Promise<MovieSearchResultResponse|null> => {
+  if(!keyword) return null;
   try {
     const response = await api.get<MovieSearchResultResponse>(
-      `v1/api/tim-kiem?keyword=${keyword}&limit=${limit}`
+      `v1/api/tim-kiem?keyword=${keyword}&limit=${limit}`,
+      {
+        signal: abortController?.signal
+      }
     );
     return response.data;
   } catch (error) {
+    if(error instanceof CanceledError) return null;
     if (error instanceof Error) {
       throw new Error(`Failed to fetch movie search result: ${error.message}`);
     } else {

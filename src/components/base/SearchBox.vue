@@ -5,22 +5,26 @@
       <Button type="button" class="search-box__close-button" :noBorder="true" icon="close" v-if="isMobile" @click="closeSearchBox">
       </Button>
     </form>
-    <SearchResultPopup v-if="searchResult" :result="searchResult" :keyword="searchString" @closePopup="closePopupHandler" :isMobile="props.isMobile" />
+    <Suspense v-if="keyword" :key="keyword">
+      <SearchResultPopup :keyword="keyword" @closePopup="closePopupHandler" :isMobile="props.isMobile" />
+      <template #fallback>
+        <Loading class="search-box__loading" size="30px" type="square" />
+      </template>
+    </Suspense>
   </div>
 </template>
 <script setup lang="ts">
 import InputBox from "./InputBox.vue";
 import SearchResultPopup from "./SearchResultPopup.vue";
 import Button from "./Button.vue";
+import Loading from "./Loading.vue";
 import { ref, watch } from "vue";
 import type { Ref } from "vue";
 import { debounce } from "../../utils/helper";
-import { getMovieSearchResult } from "../../services/movieService";
-import type { MovieSearchResultResponse } from "../../services/types";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const searchString: Ref<string> = ref("");
-const searchResult: Ref<MovieSearchResultResponse | null> = ref(null);
+const keyword: Ref<string> = ref("");
 const searchBox: Ref<HTMLElement | null> = ref(null);
 
 const props = defineProps<{
@@ -29,26 +33,23 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: "closePopup"): void;
-  (e: "activeSearchBox") : void
 }>();
 
 function closeSearchBox() {
   searchString.value = "";
+  // searchResult.value = null;
   emits("closePopup");
 }
 watch(
   searchString,
-  debounce(async () => {
-    if (searchString.value !== "")
-      searchResult.value = await getMovieSearchResult(searchString.value);
-      emits("closePopup");
-      emits("activeSearchBox");
-  }, 300)
+  debounce(() => {
+    keyword.value = searchString.value;
+  }, 0)
 );
 
 function closePopupHandler(event: Event): void {
   if (!searchBox.value?.contains(event.target as Node)) {
-    searchResult.value = null;
+    // searchResult.value = null;
   }
 }
 
@@ -75,6 +76,10 @@ function submitSearchHandler() {
 
   :deep(.input-box__icon) {
     background: #fff;
+  }
+
+  &__loading {
+    position: relative;
   }
 
   &--mobile {

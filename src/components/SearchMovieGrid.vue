@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const ITEM_PER_PAGE = 15;
 
-const movies: MovieSearchResultResponse = await getMovieSearchResult(
+const movies: MovieSearchResultResponse | null = await getMovieSearchResult(
   props.keyword,
   ITEM_PER_PAGE
 );
@@ -21,7 +21,7 @@ const movies: MovieSearchResultResponse = await getMovieSearchResult(
     <Title class="search-movie__title"
       >Tìm kiếm với từ khoá: "{{ keyword }}"</Title
     >
-    <MovieGrid
+    <MovieGrid v-if="movies"
       :imgHost="movies.data.APP_DOMAIN_CDN_IMAGE"
       :movies="movies.data.items"
     />
