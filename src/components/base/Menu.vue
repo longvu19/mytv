@@ -56,7 +56,9 @@ const menus = reactive([
       <ul class="main-menu__list">
         <li class="main-menu__item" v-for="(menu, index) in menus" :key="index">
           <RouterLink :to="{ name: menu.path, state: { category: menu.name }, force: true }" class="main-menu__link">
-            <Icon :src="menu.icon" class="main-menu__icon" />
+            <div class="main-menu__icon-wrapper">
+              <Icon :src="menu.icon" class="main-menu__icon" />
+            </div>
             <span>{{ menu.name }}</span>
           </RouterLink>
         </li>
@@ -197,6 +199,14 @@ $className : ".main-menu";
       height: 25px;
       width: 25px;
       transition: background 0.25s;
+    }
+
+    #{$className}__icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 25px;
+      height: 100%;
     }
 
     &:hover {

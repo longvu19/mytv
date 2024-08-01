@@ -21,6 +21,7 @@
     "sass": "^1.77.6",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-plugin-webfont-dl": "^3.9.4",
     "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^2.0.6"
   }

@@ -7,7 +7,7 @@ import CategoryMovieList from "../components/CategoryMovieList.vue";
 <template>
   <Layout>
     <Transition name="fade">
-      <Suspense timeout="5000" :suspensible="false">
+      <Suspense>
         <template #default>
           <div>
             <FeaturingMovies />
