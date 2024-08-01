@@ -5,6 +5,7 @@ import "./style.css";
 import App from "./App.vue";
 import { createWebHistory, createRouter } from "vue-router";
 import responsive from "./plugins/responsive";
+import { lockScroll } from "./utils/helper";
 
 const routes = [
   { path: "/", component: () => import("./pages/HomePage.vue"), name: "home" },
@@ -45,6 +46,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(() => {
+  lockScroll(false);
 });
 
 createApp(App).use(pinia).use(router).use(responsive).mount("#app");

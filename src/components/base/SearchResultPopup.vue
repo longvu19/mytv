@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { computed, onMounted } from "vue";
-import { ComputedRef, onUnmounted } from "vue";
+import Loading from "./Loading.vue";
+import { ref, computed, onMounted, onUnmounted, watchEffect } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { getMovieSearchResult } from "../../services/movieService";
 import type {
   MovieSearchResultResponse,
@@ -10,19 +11,30 @@ import SearchResult from "./SearchResult.vue";
 const props = defineProps<{
   keyword: string;
   isMobile?: boolean;
+  stopRequest?: boolean
 }>();
 const abortController = new AbortController();
 onUnmounted(() => {
   abortController.abort();
 })
-const searchResult: MovieSearchResultResponse | null = await getMovieSearchResult(props.keyword, 10, abortController);
+const footerLinkClassObject = computed(() => {
+  return { "search-result__footer-link--mobile": props.isMobile }
+})
+const searchResult: Ref<MovieSearchResultResponse | null> = ref(null);
+watchEffect(async () => {
+  searchResult.value = props.stopRequest ? null : await getMovieSearchResult(props.keyword, 10, abortController);
+})
 const data: ComputedRef<MovieListInfo[]> = computed(() => {
-  return searchResult ? searchResult.data.items : [];
+  return searchResult.value ? searchResult.value.data.items : [];
 });
 
 const emits = defineEmits<{
   (e: 'closePopup', event: Event): void
 }>();
+
+const loadingClassObject = computed(() => {
+  return { 'search-box__loading--mobile': props.isMobile }
+})
 
 onMounted(() => {
   window.addEventListener("click", (e) => {
@@ -40,11 +52,12 @@ onMounted(() => {
       <div v-else class="search-result__no-result">Không tìm thấy kết quả cho "{{ keyword }}"</div>
     </div>
     <div class="search-result__footer" v-if="data.length > 0">
-      <RouterLink :to="{ name: 'tim-kiem', query: { k: keyword } }" class="search-result__footer-link">
+      <RouterLink :to="{ name: 'tim-kiem', query: { k: keyword } }" class="search-result__footer-link" :class="footerLinkClassObject">
         Xem thêm
       </RouterLink>
     </div>
   </div>
+  <Loading v-else class="search-box__loading" :class="loadingClassObject" size="30px" type="square" />
 </template>
 
 <style lang="scss" scoped>
@@ -98,11 +111,15 @@ $className: "search-result";
   &__footer-link {
     display: block;
     width: 100%;
-    padding: 20px 0;
+    padding: 5px 0;
     text-decoration: none;
     color: white;
     text-align: center;
     background: rgb(17, 17, 17);
+
+    &--mobile {
+      padding: 20px 0;
+    }
 
     &:hover {
       background: rgb(64, 64, 64);

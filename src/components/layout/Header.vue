@@ -24,8 +24,13 @@ const toggleMenu = () => {
 };
 const toggleSearchBox = () => {
   searchBoxActive.value = !searchBoxActive.value;
-  lockScroll((isMobile) && searchBoxActive.value);
 };
+const activeSearchBox = () => {
+  searchBoxActive.value = true;
+}
+const deactiveSearchBox = () => {
+  searchBoxActive.value = false;
+}
 watch([isMobile, searchBoxActive], () => {
   lockScroll(isMobile.value && searchBoxActive.value)
 })
@@ -54,7 +59,7 @@ onMounted(() => {
     'header__right--mobile': isMobile,
     'header__right--active': searchBoxActive,
   }">
-      <SearchBox :isMobile="isMobile" :class="{ 'search-box--mobile': isMobile }" @closePopup="toggleSearchBox" />
+      <SearchBox :isMobile="isMobile" :class="{ 'search-box--mobile': isMobile }" @activeSearchBox="activeSearchBox" @deactiveSearchBox="deactiveSearchBox" @closePopup="toggleSearchBox" />
     </div>
   </header>
 </template>
