@@ -13,5 +13,14 @@ export default defineConfig({
     minify: "esbuild",
     cssMinify: "esbuild",
     modulePreload: true,
-  },
+    cssCodeSplit: false,
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') return 'style.css';
+          return assetInfo.name;
+        },
+      },
+    },
+  }
 });

@@ -7,7 +7,7 @@ const api = axios.create({
 });
 
 export const getFeaturingMovies = async (
-  page: number = 1,
+  page: number = 1
 ): Promise<FeaturingMovieResponse> => {
   const store = useFeaturingMovieStore();
   try {
@@ -19,6 +19,14 @@ export const getFeaturingMovies = async (
         `/danh-sach/phim-moi-cap-nhat?page=${page}&limit=5`
       );
       data = response.data;
+      data.items.forEach((item) => {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.href = item.thumb_url;
+        link.as = "image";
+        link.fetchPriority = "high";
+        document.head.appendChild(link);
+      });
       store.setApiRes(response.data);
       setTimeout(() => {
         store.clearApiRes();

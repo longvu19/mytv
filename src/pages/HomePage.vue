@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import Layout from "../components/layout/Layout.vue";
-import FeaturingMovies from "../components/FeaturingMovies.vue";
-import Loading from "../components/base/Loading.vue";
-import CategoryMovieList from "../components/CategoryMovieList.vue";
+  import Layout from "../components/layout/Layout.vue";
+  import FeaturingMovies from "../components/FeaturingMovies.vue";
+  import Loading from "../components/base/Loading.vue";
+  import CategoryMovieList from "../components/CategoryMovieList.vue";
 </script>
 <template>
   <Layout>
@@ -27,9 +27,9 @@ import CategoryMovieList from "../components/CategoryMovieList.vue";
   </Layout>
 </template>
 <style lang="scss" scoped>
-.categories {
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-}
+  .categories {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
 </style>
