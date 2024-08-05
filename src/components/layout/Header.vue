@@ -158,6 +158,7 @@ onMounted(() => {
       img {
         height: 100%;
         width: auto;
+        aspect-ratio: 68/25;
       }
 
       h1 {

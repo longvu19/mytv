@@ -4,6 +4,7 @@ import '@splidejs/vue-splide/css';
 import Button from './Button.vue';
 import type { MovieInfo } from '../../services/types';
 import LazyLoadingImg from './LazyLoadingImg.vue';
+
 defineProps<{
   options: any;
   slides: MovieInfo[] | null;

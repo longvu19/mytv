@@ -21,6 +21,7 @@ import Footer from './Footer.vue';
   height: 100%;
   &__main {
     flex-grow: 1;
+    min-height: inherit;
   }
 
   &__header {
