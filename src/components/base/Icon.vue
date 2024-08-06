@@ -7,7 +7,7 @@
   >
   </span>
   <span class="icon icon--non-masking" v-else-if="icon">
-    <img :src="icon" alt="" />
+    <img :src="icon" :width="props.size" :height="props.size" />
   </span>
 </template>
 <script setup lang="ts">
@@ -17,6 +17,7 @@ const props = withDefaults(
   defineProps<{
     src: string;
     masking?: boolean;
+    size?: string;
   }>(),
   {
     masking: true,
@@ -47,6 +48,9 @@ watchEffect(async () => {
   width: 100%;
   height: 100%;
 
+  img {
+    aspect-ratio: 1 / 1;
+  }
   &--non-masking {
     background: none;
   }

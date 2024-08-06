@@ -27,8 +27,7 @@
 
   const emits = defineEmits<{
     (e: "closePopup"): void;
-    (e: "activeSearchBox"): void;
-    (e: "deactiveSearchBox"): void;
+    (e: "toggleSearchBox", state: boolean): void;
   }>();
 
   function closeSearchBox() {
@@ -46,12 +45,12 @@
   function closePopupHandler(event: Event): void {
     if (!searchBox.value?.contains(event.target as Node)) {
       keyword.value = '';
-      emits("deactiveSearchBox");
+      emits("toggleSearchBox", false);
     }
   }
 
   function activeSearchBox(): void {
-    emits("activeSearchBox");
+    emits("toggleSearchBox", true);
   }
 
   function submitSearchHandler() {

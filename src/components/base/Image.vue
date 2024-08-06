@@ -28,7 +28,7 @@
 <template>
   <!-- <figure ref="picture">
   </figure> -->
-  <img :src="props.imgSrc" :alt="props.imgAlt" @load="imageLoaded = true" />
+  <img :src="props.imgSrc" :alt="props.imgAlt" @load="imageLoaded = true" loading="lazy"/>
   <Loading v-if="!imageLoaded" type="square" size="30px" />
 </template>
 
