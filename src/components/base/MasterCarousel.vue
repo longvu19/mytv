@@ -79,6 +79,7 @@ defineProps<{
     position: relative;
     height: 100%;
     z-index: 0;
+    contain: strict;
 
     img {
       width: 100%;
