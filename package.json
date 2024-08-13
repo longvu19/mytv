@@ -10,11 +10,15 @@
   },
   "dependencies": {
     "@splidejs/vue-splide": "^0.6.12",
-    "axios": "^1.7.2",
+    "@types/node": "^18.8.0",
+    "axios": "1.7.3",
+    "firebase": "^10.12.5",
+    "mitt": "^3.0.1",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
     "vue-hls-video-player": "^1.0.1",
-    "vue-router": "^4.4.0"
+    "vue-router": "^4.4.0",
+    "vuefire": "^3.1.24"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

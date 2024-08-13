@@ -2,6 +2,7 @@
   import Menu from "../base/Menu.vue";
   import SearchBox from "../base/SearchBox.vue";
   import Button from "../base/Button.vue";
+  import UserNav from "../UserNav.vue";
   import { useResponsive } from "../../plugins/responsive";
   import { ref, onMounted, computed, watch } from "vue";
   import { lockScroll } from "../../utils/helper";
@@ -22,15 +23,9 @@
     menuActive.value = !menuActive.value;
     lockScroll((isMobile || $isLg || $isXl) && menuActive.value);
   };
-  const toggleSearchBox = (state? : boolean) => {
-    searchBoxActive.value = state? state : !searchBoxActive.value;
+  const toggleSearchBox = (state?: boolean) => {
+    searchBoxActive.value = state ? state : !searchBoxActive.value;
   };
-  // const activeSearchBox = () => {
-  //   searchBoxActive.value = true;
-  // }
-  // const deactiveSearchBox = () => {
-  //   searchBoxActive.value = false;
-  // }
   watch([isMobile, searchBoxActive], () => {
     lockScroll(isMobile.value && searchBoxActive.value)
   })
@@ -60,6 +55,7 @@
       'header__right--active': searchBoxActive,
     }">
       <SearchBox :isMobile="isMobile" :class="{ 'search-box--mobile': isMobile }" @toggleSearchBox="toggleSearchBox" @closePopup="toggleSearchBox" />
+      <UserNav />
     </div>
   </header>
 </template>

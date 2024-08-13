@@ -3,11 +3,13 @@ import Icon from "./Icon.vue";
 withDefaults(
   defineProps<{
     primary?: boolean;
-    type: "button" | "submit" | "reset";
+    type: "button" | "submit" | "reset" | "link";
     icon?: string | null;
     disabled?: boolean;
     size?: "small" | "medium" | "large";
     noBorder?: boolean;
+    fullWidth?: boolean;
+    iconMasking?: boolean;
   }>(),
   {
     primary: false,
@@ -16,12 +18,14 @@ withDefaults(
     disabled: false,
     size: "medium",
     noBorder: false,
+    fullWidth: false,
+    iconMasking: true,
   }
 );
 </script>
 
 <template>
-  <button
+  <button v-if="type !== 'link'"
     :type="type"
     class="button"
     :class="[
@@ -29,18 +33,30 @@ withDefaults(
         'button--primary': primary,
         'button--disabled': disabled,
         'button--no-border': noBorder,
+        'button--fullwidth': fullWidth,
+        'button--no-mask': !iconMasking
       },
       `button--${size}`,
     ]"
   >
-    <Icon class="button__icon" v-if="icon" :src="icon" />
+    <Icon class="button__icon" v-if="icon" :masking="iconMasking" :src="icon" />
     <span class="button__text" v-if="$slots.default">
       <slot></slot>
     </span>
   </button>
+  <a v-else @click.prevent class="link"><slot></slot></a>
 </template>
 
 <style lang="scss" scoped>
+.link {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  font-size: inherit;
+  font-weight: 500;
+  display: inline-block;
+}
 .button {
   display: inline-flex;
   align-items: center;
@@ -78,6 +94,10 @@ withDefaults(
     }
   }
 
+  &--fullwidth {
+    width: 100%;
+  }
+
   &--primary {
     background: white;
     color: #111;
@@ -107,7 +127,7 @@ withDefaults(
   &__text {
     font-size: inherit;
     font-weight: 500;
-    text-transform: uppercase;
+    text-transform: inherit;
   }
 
   &--disabled {
@@ -151,6 +171,11 @@ withDefaults(
     .button__icon {
       width: 25px;
       height: 25px;
+    }
+  }
+  &--no-mask {
+    :deep(.icon) {
+      background: none!important;
     }
   }
 }

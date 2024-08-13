@@ -111,7 +111,7 @@ export interface MovieDetail {
     name: string;
     slug: string;
   }[];
-};
+}
 
 export interface Episode {
   name: string;
@@ -134,16 +134,19 @@ export interface MovieDetailResponse {
 }
 
 export interface InputProps {
-  id?: string,
-  label?: string,
-  type: string,
-  placeholder?: string,
-  modelValue?: string,
-  icon?: string,
-  iconClickHandler?: (...args: any[]) => any
+  id?: string;
+  label?: string;
+  type: string;
+  placeholder?: string;
+  modelValue?: string;
+  icon?: string;
+  iconSize?: string;
+  required?: boolean;
+  bgTransparent?: boolean;
+  iconClickHandler?: () => void | ((...args: any[]) => any);
 }
 
-export interface MovieSearchResultResponse extends CategoryMoviesResponse{
+export interface MovieSearchResultResponse extends CategoryMoviesResponse {
   params: {
     type_slug: string;
     keyword: string;
@@ -153,10 +156,10 @@ export interface MovieSearchResultResponse extends CategoryMoviesResponse{
     filterType: string;
     sortField: string;
     sortType: string;
-  }
+  };
 }
 
 export interface LoadingProps {
-  size?: string,
-  type?: 'spinner'|'square'
+  size?: string;
+  type?: "spinner" | "square";
 }

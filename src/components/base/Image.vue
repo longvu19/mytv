@@ -2,10 +2,14 @@
   // import photoPlaceholder from "../../assets/photo.svg?url";
   import { ref } from "vue";
   import Loading from './Loading.vue';
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     imgSrc: string;
     imgAlt: string;
-  }>();
+    class?: string|object;
+    size?: string
+  }>(), {
+    size: "100%",
+  });
   const imageLoaded = ref(false);
   // const imgPromise = new Promise((resolve) => {
   //   const imgEl: HTMLImageElement = new Image();
@@ -28,14 +32,14 @@
 <template>
   <!-- <figure ref="picture">
   </figure> -->
-  <img :src="props.imgSrc" :alt="props.imgAlt" @load="imageLoaded = true" loading="lazy"/>
+  <img :src="props.imgSrc" :alt="props.imgAlt" @load="imageLoaded = true" :class="props.class" loading="lazy"/>
   <Loading v-if="!imageLoaded" type="square" size="30px" />
 </template>
 
 <style lang="scss" scoped>
   img{
-    width: 100%;
-    height: 100%;
+    width: v-bind(size);
+    height: v-bind(size);
     object-fit: cover;
   }
 </style>
