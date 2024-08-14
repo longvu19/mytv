@@ -1,7 +1,7 @@
 <template>
   <div class="search-box" ref="searchBox">
     <form @submit.prevent="submitSearchHandler" method="get">
-      <InputBox id="searchInput" type="text" v-model="searchString" @focus="activeSearchBox" placeholder="Tìm kiếm" icon="search" :iconClickHandler="submitSearchHandler" />
+      <InputBox id="searchInput" type="text" v-model="searchString" :bgTransparent="true" @focus="activeSearchBox" placeholder="Tìm kiếm" icon="search" :iconClickHandler="submitSearchHandler" />
       <Button type="button" class="search-box__close-button" :noBorder="true" icon="close" v-if="isMobile" @click="closeSearchBox">
       </Button>
     </form>
