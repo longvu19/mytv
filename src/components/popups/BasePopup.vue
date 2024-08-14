@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-  import Button from "../base/Button.vue";
-  import { inject } from 'vue';
-  const emitter = inject('emitter');
+  import Button from "../base/Button.vue";  
+  import EventBus from '../../utils/eventBus';
   const props = withDefaults(defineProps<{
     width?: string;
     height?: string;
@@ -15,7 +14,7 @@
   }>()
 
   const closePopup = () => {
-    emitter.emit('closePopup', false);
+    EventBus.emit('closePopup', false);
     emits('closePopup');
   }
 </script>

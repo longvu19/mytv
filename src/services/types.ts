@@ -163,3 +163,7 @@ export interface LoadingProps {
   size?: string;
   type?: "spinner" | "square";
 }
+
+export type EventBus = {
+  closePopup: string;
+} 

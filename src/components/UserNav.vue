@@ -2,21 +2,21 @@
   import ProfileImage from './base/ProfileImage.vue';
   import { RouterLink } from 'vue-router';
   import AuthPopup from './popups/AuthPopup.vue';
-  import { ref, inject } from 'vue';
+  import { ref } from 'vue';
   import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
   import type { User } from 'firebase/auth';
+  import EventBus from '../utils/eventBus';
   const auth = getAuth();
   const user = ref(auth.currentUser);
 
   onAuthStateChanged(auth, (currentUser: User | null) => {
-    if (currentUser) {user.value = currentUser;}
-    else {user.value = null;}
+    if (currentUser) { user.value = currentUser; }
+    else { user.value = null; }
   })
   const isAuthPopupActive = ref(false);
-  const emitter = inject('emitter');
   const togglePopup = (state?: boolean) => {
     isAuthPopupActive.value = state ? state : !isAuthPopupActive.value;
-    emitter.emit('closePopup', isAuthPopupActive.value);
+    EventBus.emit('closePopup', isAuthPopupActive.value);
   }
 
 </script>

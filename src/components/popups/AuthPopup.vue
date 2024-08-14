@@ -39,8 +39,8 @@
     <Button class="auth-popup__forget-password-link" type="button" size="small" :primary="false" :noBorder="true">Quên mật khẩu?</Button>
     <div class="auth-popup__separator">hoặc</div>
     <div class="auth-popup__providers">
-      <LoginProvider provider="Google" />
-      <LoginProvider provider="Facebook" />
+      <LoginProvider provider="Google" @closePopup="emits('closePopup')" />
+      <LoginProvider provider="Microsoft" @closePopup="emits('closePopup')" />
     </div>
     <template v-slot:footer>
       <p v-if="hasAccount">Chưa có tài khoản? <Button class="auth-popup__footer-link" type="link" :noBorder="true" @click="signUpHandler">Đăng ký ngay</Button></p>

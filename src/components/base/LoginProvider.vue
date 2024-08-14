@@ -1,23 +1,41 @@
 <script lang="ts" setup>
   import Button from "./Button.vue";
   import { computed } from "vue";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
+
   const props = defineProps<{
-    provider: 'Google' | 'Facebook'
-  }>()
+    provider: 'Google' | 'Microsoft'
+  }>();
+  const emits = defineEmits<{
+    (e: 'closePopup'): void
+  }>();
+
+  const auth = getAuth()!;
+  auth.useDeviceLanguage();
+  const authProvider = props.provider === 'Google' ? new GoogleAuthProvider() : new OAuthProvider('microsoft.com');
+  const signInHandler = () => {
+    signInWithPopup(auth, authProvider)
+      .then(() => {
+        emits('closePopup');
+      }).catch((error: Error) => {
+        console.log(error)
+      });
+  }
+
   const providerIcon = computed(() => {
-    return props.provider === 'Google' ? 'google' : 'facebook'
+    return props.provider === 'Google' ? 'google' : 'microsoft'
   })
   const classObj = computed(() => {
     return {
       "login-provider": true,
       'login-provider--google': props.provider === 'Google',
-      'login-provider--facebook': props.provider === 'Facebook'
+      'login-provider--microsoft': props.provider === 'Microsoft'
     }
   })
 </script>
 
 <template>
-  <Button type="button" class="login-provider" :class="classObj" :icon="providerIcon" :iconMasking="false" :fullWidth="true">Đăng nhập với {{ provider }}</Button>
+  <Button type="button" class="login-provider" :class="classObj" :icon="providerIcon" :iconMasking="false" :fullWidth="true" @click="signInHandler">Đăng nhập với {{ provider }}</Button>
 </template>
 
 <style lang="scss" scoped>
@@ -35,19 +53,11 @@
       text-transform: none;
     }
 
-    &--google {
+    &--google, &--microsoft {
       background: #fff !important;
 
       :deep(.button__text) {
         color: #000;
-      }
-    }
-
-    &--facebook {
-      background: #4460A0 !important;
-
-      :deep(.button__text) {
-        color: #fff;
       }
     }
   }

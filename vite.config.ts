@@ -8,6 +8,11 @@ export default defineConfig({
   resolve: {
     alias: {},
   },
+  server: {
+    headers: {
+      // "Cross-Origin-Opener-Policy": "unsafe-none",
+    },
+  },
   build: {
     assetsInlineLimit: 0,
     minify: "esbuild",
@@ -17,10 +22,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') return 'style.css';
+          if (assetInfo.name === "style.css") return "style.css";
           return assetInfo.name;
         },
       },
     },
-  }
+  },
 });

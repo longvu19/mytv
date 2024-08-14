@@ -6,9 +6,7 @@ import App from "./App.vue";
 import { createWebHistory, createRouter } from "vue-router";
 import responsive from "./plugins/responsive";
 import { lockScroll } from "./utils/helper";
-import { initFirebase } from './firebase';
-import mitt from "mitt";
-const emitter = mitt();
+import { initFirebase } from "./firebase";
 
 const routes = [
   { path: "/", component: () => import("./pages/HomePage.vue"), name: "home" },
@@ -57,5 +55,4 @@ router.beforeEach(() => {
 
 initFirebase();
 const app = createApp(App);
-app.provide("emitter", emitter);
 app.use(pinia).use(router).use(responsive).mount("#app");

@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-  import { ref, inject } from 'vue';
+  import { ref } from 'vue';
   import Header from './Header.vue';
   import Footer from './Footer.vue';
   import PopupLayer from './PopupLayer.vue';
-  const isPopupShow = ref(false);
-  const togglePopupLayer = (state: boolean) => {
-    isPopupShow.value = state;
-  }
-  const emitter = inject('emitter');
+  import EventBus from '../../utils/eventBus';
 
-  emitter.on('closePopup', togglePopupLayer);
+  const isPopupShow = ref(false);
+  const togglePopupLayer = (state: unknown) => {
+    isPopupShow.value = state as boolean;
+  }
+  EventBus.on<'closePopup'>('closePopup', togglePopupLayer);
 </script>
 
 <template>
