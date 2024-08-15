@@ -9,7 +9,7 @@
   }>();
   const emits = defineEmits<{
     (e: 'closePopup'): void,
-    (e: 'authError', error: Error): void
+    (e: 'authError', error: FirebaseError): void
   }>();
 
   const auth = getAuth()!;
