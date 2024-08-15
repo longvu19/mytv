@@ -2,12 +2,14 @@
   import Button from "./Button.vue";
   import { computed } from "vue";
   import { getAuth, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
+  import type { FirebaseError } from "firebase/app";
 
   const props = defineProps<{
     provider: 'Google' | 'Microsoft'
   }>();
   const emits = defineEmits<{
-    (e: 'closePopup'): void
+    (e: 'closePopup'): void,
+    (e: 'authError', error: Error): void
   }>();
 
   const auth = getAuth()!;
@@ -17,8 +19,8 @@
     signInWithPopup(auth, authProvider)
       .then(() => {
         emits('closePopup');
-      }).catch((error: Error) => {
-        console.log(error)
+      }).catch((error: FirebaseError) => {
+        emits('authError', error)
       });
   }
 
@@ -53,7 +55,8 @@
       text-transform: none;
     }
 
-    &--google, &--microsoft {
+    &--google,
+    &--microsoft {
       background: #fff !important;
 
       :deep(.button__text) {
