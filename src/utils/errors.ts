@@ -44,7 +44,7 @@ export const authErrors = new Map(
     "quota-exceeded": "Vượt quá hạn mức.",
     "redirect-operation-pending": "Đăng nhập chuyển hướng đang chờ xử lý.",
     "second-factor-already-in-use": "Yếu tố thứ hai đã được đăng ký.",
-    "timeout": "Thao tác đã hết thời gian chờ.",
+    timeout: "Thao tác đã hết thời gian chờ.",
     "user-token-expired": "Thông tin xác thực đã hết hạn.",
     "too-many-requests": "Quá nhiều yêu cầu từ thiết bị này.",
     "user-not-found": "Người dùng không tồn tại.",

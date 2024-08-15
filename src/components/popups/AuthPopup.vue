@@ -6,8 +6,11 @@
   import BasePopup from "./BasePopup.vue";
   import Button from "../base/Button.vue";
   import LoginProvider from "../base/LoginProvider.vue";
-  const currentComponent: ShallowRef<Component> = shallowRef(LoginForm);
+  import { authErrors } from "../../utils/errors";
+  import type { FirebaseError } from "firebase/app";
 
+  const currentComponent: ShallowRef<Component> = shallowRef(LoginForm);
+  const errorMessage = ref<string | null>(null);
   const hasAccount = ref(true);
   const toggleHasAccount = (state?: boolean) => {
     hasAccount.value = state ? state : !hasAccount.value;
@@ -25,6 +28,10 @@
     toggleHasAccount(false);
   }
 
+  const showAuthError = (error: FirebaseError) => {
+    errorMessage.value = authErrors.get(error.code.replace("auth/", "")) as string;
+  }
+
   const emits = defineEmits<{
     (e: 'closePopup'): void
   }>()
@@ -39,9 +46,10 @@
     <Button class="auth-popup__forget-password-link" type="button" size="small" :primary="false" :noBorder="true">Quên mật khẩu?</Button>
     <div class="auth-popup__separator">hoặc</div>
     <div class="auth-popup__providers">
-      <LoginProvider provider="Google" @closePopup="emits('closePopup')" />
-      <LoginProvider provider="Microsoft" @closePopup="emits('closePopup')" />
+      <LoginProvider provider="Google" @closePopup="emits('closePopup')" @authError="showAuthError" />
+      <LoginProvider provider="Microsoft" @closePopup="emits('closePopup')" @authError="showAuthError" />
     </div>
+    <p class="auth-popup__error-message" v-if="errorMessage">{{ errorMessage }}</p>
     <template v-slot:footer>
       <p v-if="hasAccount">Chưa có tài khoản? <Button class="auth-popup__footer-link" type="link" :noBorder="true" @click="signUpHandler">Đăng ký ngay</Button></p>
       <p v-else>Đã có tài khoản? <Button class="auth-popup__footer-link" type="link" :noBorder="true" @click="signInHandler">Đăng nhập ngay</Button></p>
@@ -53,6 +61,11 @@
   .auth-popup {
     display: flex;
     flex-direction: column;
+
+    &__error-message {
+      color: rgb(255, 93, 93);
+      font-weight: 300;
+    }
 
     :deep(.popup__body) {
       align-items: center;
