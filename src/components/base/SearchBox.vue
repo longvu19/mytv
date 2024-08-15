@@ -5,15 +5,14 @@
       <Button type="button" class="search-box__close-button" :noBorder="true" icon="close" v-if="isMobile" @click="closeSearchBox">
       </Button>
     </form>
-    <SearchResultPopup v-if="keyword" :keyword="keyword" :stopRequest="stopRequest" @closePopup="closePopupHandler" :isMobile="props.isMobile" />
+    <component :is="searchResultPopup" v-if="keyword" :keyword="keyword" :stopRequest="stopRequest" @closePopup="closePopupHandler" :isMobile="props.isMobile" />
   </div>
 </template>
 <script setup lang="ts">
   import InputBox from "./InputBox.vue";
-  import SearchResultPopup from "./SearchResultPopup.vue";
   import Button from "./Button.vue";
-  import { ref, watch } from "vue";
-  import type { Ref } from "vue";
+  import { ref, shallowRef, watch,defineAsyncComponent } from "vue";
+  import type { Component, Ref, ShallowRef } from "vue";
   import { debounce } from "../../utils/helper";
   import { useRouter } from "vue-router";
   const router = useRouter();
@@ -21,6 +20,7 @@
   const keyword: Ref<string> = ref("");
   const searchBox: Ref<HTMLElement | null> = ref(null);
   const stopRequest: Ref<boolean> = ref(false);
+  const searchResultPopup : ShallowRef<Component|null> = shallowRef(null)
   const props = defineProps<{
     isMobile: boolean;
   }>();
@@ -39,6 +39,7 @@
     debounce(() => {
       stopRequest.value = !stopRequest.value;
       keyword.value = searchString.value;
+      searchResultPopup.value = defineAsyncComponent(() => import('./SearchResultPopup.vue'))
     }, 500, true)
   );
 
