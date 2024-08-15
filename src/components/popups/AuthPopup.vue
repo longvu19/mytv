@@ -3,6 +3,7 @@
   import type { Component, ShallowRef } from "vue";
   import LoginForm from "../forms/LoginForm.vue";
   import RegisterForm from "../forms/RegisterForm.vue";
+  import ForgetPassword from "../forms/ForgetPassword.vue";
   import BasePopup from "./BasePopup.vue";
   import Button from "../base/Button.vue";
   import LoginProvider from "../base/LoginProvider.vue";
@@ -12,20 +13,27 @@
   const currentComponent: ShallowRef<Component> = shallowRef(LoginForm);
   const errorMessage = ref<string | null>(null);
   const hasAccount = ref(true);
-  const toggleHasAccount = (state?: boolean) => {
-    hasAccount.value = state ? state : !hasAccount.value;
-  }
-  const popupTitle = computed(() => hasAccount.value ? "Đăng nhập" : "Đăng ký");
+  const isPasswordForgot = ref(false);
+
+  const popupTitle = computed(() => isPasswordForgot.value ? "Quên mật khẩu" : hasAccount.value ? "Đăng nhập" : "Đăng ký");
   const activeComponent = (component: Component) => {
     currentComponent.value = component;
   }
-  const signInHandler = () => {
-    activeComponent(LoginForm);
-    toggleHasAccount(true);
+  const getForgetPasswordForm = () => {
+    activeComponent(ForgetPassword);
+    isPasswordForgot.value = true;
   }
-  const signUpHandler = () => {
+  const getSignInForm = () => {
+    activeComponent(LoginForm);
+    hasAccount.value = true;
+  }
+  const getSignUpForm = () => {
     activeComponent(RegisterForm);
-    toggleHasAccount(false);
+    hasAccount.value = false;
+  }
+  const cancelForgetPassword = () => {
+    isPasswordForgot.value = false;
+    getSignInForm();
   }
 
   const showAuthError = (error: FirebaseError) => {
@@ -41,9 +49,9 @@
 <template>
   <BasePopup width="500px" :title="popupTitle" class="auth-popup" @closePopup="emits('closePopup')">
     <KeepAlive>
-      <component :is="currentComponent" @closePopup="emits('closePopup')"></component>
+      <component :is="currentComponent" @cancel="cancelForgetPassword" @closePopup="emits('closePopup')"></component>
     </KeepAlive>
-    <Button class="auth-popup__forget-password-link" type="button" size="small" :primary="false" :noBorder="true">Quên mật khẩu?</Button>
+    <Button v-if="!isPasswordForgot" class="auth-popup__forget-password-link" type="button" size="small" :primary="false" :noBorder="true" @click="getForgetPasswordForm">Quên mật khẩu?</Button>
     <div class="auth-popup__separator">hoặc</div>
     <div class="auth-popup__providers">
       <LoginProvider provider="Google" @closePopup="emits('closePopup')" @authError="showAuthError" />
@@ -51,8 +59,8 @@
     </div>
     <p class="auth-popup__error-message" v-if="errorMessage">{{ errorMessage }}</p>
     <template v-slot:footer>
-      <p v-if="hasAccount">Chưa có tài khoản? <Button class="auth-popup__footer-link" type="link" :noBorder="true" @click="signUpHandler">Đăng ký ngay</Button></p>
-      <p v-else>Đã có tài khoản? <Button class="auth-popup__footer-link" type="link" :noBorder="true" @click="signInHandler">Đăng nhập ngay</Button></p>
+      <p v-if="hasAccount">Chưa có tài khoản? <Button class="auth-popup__footer-link" type="link" :noBorder="true" @click="getSignUpForm">Đăng ký ngay</Button></p>
+      <p v-else>Đã có tài khoản? <Button class="auth-popup__footer-link" type="link" :noBorder="true" @click="getSignInForm">Đăng nhập ngay</Button></p>
     </template>
   </BasePopup>
 </template>
