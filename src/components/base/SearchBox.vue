@@ -71,7 +71,7 @@
     }
 
     :deep(.input-box:not(:focus-within)) {
-      border-color: white;
+      border-color: rgba(255, 255, 225, 0.4);
     }
 
     :deep(.input-box__icon) {

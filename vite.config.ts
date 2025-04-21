@@ -3,8 +3,25 @@ import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import webfontDownload from "vite-plugin-webfont-dl";
 // https://vitejs.dev/config/
+const routes = [
+  "/phim-bo",
+  "/tv-shows",
+  "/phim-le",
+  "/hoat-hinh",
+  "/phim",
+  "/tim-kiem",
+];
 export default defineConfig({
-  plugins: [vue(), svgLoader(), webfontDownload()],
+  plugins: [vue(), svgLoader(), webfontDownload(),
+    {
+      name: 'rewrite-middleware',
+      configureServer(serve) {
+        serve.middlewares.use((req, res, next) => {
+          next()
+        })
+      }
+    }
+  ],
   resolve: {
     alias: {},
   },
