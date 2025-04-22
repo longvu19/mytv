@@ -13,17 +13,24 @@ const routes = [
 ];
 export default defineConfig({
   plugins: [vue(), svgLoader(), webfontDownload(),
-    {
-      name: 'rewrite-middleware',
-      configureServer(serve) {
-        serve.middlewares.use((req, res, next) => {
-          next()
-        })
-      }
-    }
+    // {
+    //   name: 'rewrite-middleware',
+    //   // configureServer(serve) {
+    //   //   serve.middlewares.use((req, res, next) => {
+    //   //     // routes.forEach((route) => {
+    //   //     //   if(req.url.st)
+    //   //         next()
+            
+    //   //     // })
+    //   //   })
+    //   // }
+    // }
   ],
   resolve: {
     alias: {},
+  },
+  shared: {
+    appType: 'mpa'
   },
   server: {
     headers: {
