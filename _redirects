@@ -1,8 +1,0 @@
-# Redirects from what the browser requests to what we serve
-
-/phim-bo /index.html 200
-/tv-shows /index.html 200
-/phim-le /index.html 200
-/hoat-hinh /index.html 200
-/phim /index.html 200
-/tim-kiem /index.html 200
