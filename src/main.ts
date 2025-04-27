@@ -43,6 +43,12 @@ const routes = [
     query: { k: "" },
     props: true,
   },
+  {
+    path: "/dat-lai-mat-khau",
+    component: () => import('./pages/ResetPasswordPage.vue'),
+    query: { oobCode: null },
+    name: 'dat-lai-mat-khau'
+  }
 ];
 const router = createRouter({
   history: createWebHistory(),

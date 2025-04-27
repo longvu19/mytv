@@ -7,14 +7,18 @@ import { useResponsive } from "../../plugins/responsive";
 import { ref, onMounted, computed, watch } from "vue";
 import { lockScroll } from "../../utils/helper";
 import logo from "/logo-mytv.svg?url";
+const props = defineProps<{
+  onlyLogo?: boolean;
+}> ()
 const scrollTop = ref(0);
 const { $isSm, $isMd, $isLg, $isXl } = useResponsive();
 const isMobile = computed(() => {
-  return $isSm.value || $isMd.value;
+  return props.onlyLogo ? false : $isSm.value || $isMd.value;
 });
 const headerClassObject = computed(() => {
   return {
     "header--bg-active": scrollTop.value > 0,
+    "header--only-logo" : props.onlyLogo
   };
 });
 const menuActive = ref(false);
@@ -48,15 +52,15 @@ onMounted(() => {
       </div>
       <Button type="button" :noBorder="true" icon="search" v-if="isMobile" @click="toggleSearchBox">
       </Button>
-      <Menu :active="menuActive" @toggleMenu="toggleMenu" />
+      <Menu :active="menuActive" @toggleMenu="toggleMenu"></Menu>
     </div>
     <div class="header__right" :class="{
       'header__right--mobile': isMobile,
       'header__right--active': searchBoxActive,
     }">
       <SearchBox :isMobile="isMobile" :class="{ 'search-box--mobile': isMobile }" @toggleSearchBox="toggleSearchBox"
-        @closePopup="toggleSearchBox" />
-      <UserNav v-if="!isMobile" />
+        @closePopup="toggleSearchBox"></SearchBox>
+      <UserNav v-if="!isMobile"></UserNav>
     </div>
   </header>
 </template>
@@ -91,6 +95,16 @@ onMounted(() => {
   &--mobile
   {
     padding: 0 10px;
+  }
+
+  &--only-logo{
+    justify-content: center;
+    .header__right{
+      display: none;
+    }
+    .header__left > *:not(.header__logo) {
+      display: none;
+    }
   }
 
   &--bg-active:before
