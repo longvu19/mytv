@@ -30,7 +30,8 @@ const setCountdown = (t: number) => {
     emailSent.value = true;
     t--;
     if (t === 0) {
-      clearInterval(intervalId);  
+      clearInterval(intervalId);
+      successMessage.value = null;
       emailSent.value = false;
     }
   }, 1000);
