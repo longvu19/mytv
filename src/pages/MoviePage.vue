@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
 const movieResponse: MovieDetailResponse = await getMovieDetail(props.slug);
 const { movie, status } = movieResponse;
 const episodes = movie.episodes;
-const currentEp: Ref<Episode|null> = ref(null);
+const currentEp: Ref<Episode | null> = ref(null);
 const currentEpNum: Ref<number> = ref(0);
 const poster_url: Ref<string> = ref('');
 const servers: string[] = [
@@ -70,7 +70,8 @@ if (!status) {
         <div class="movie-info__episodes-server" v-for="episode, index in episodes" :key="index">
           <strong class="movie-info__episodes-title">{{ episode.server_name }}</strong>
           <EpisodeList class="movie-info__episodes-list" :isServerSelected="index === servers.indexOf(props.server)"
-            :episodes="episode" :currentEp="currentEpNum" :totalEp="parseInt(movie.total_episodes)" />
+            :episodes="episode" :currentEp="currentEpNum" :server="servers[index]"
+            :totalEp="parseInt(movie.total_episodes)" />
         </div>
       </div>
       <h2 class="movie-info__title">{{ movie.name }}</h2>

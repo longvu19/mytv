@@ -6,7 +6,8 @@ const props = defineProps<{
   episodes: MovieEpisode,
   isServerSelected: boolean,
   currentEp: number,
-  totalEp: number
+  totalEp: number,
+  server: string
 }>();
 const epData: Episode[] = props.episodes.items;
 const epList: string[] = epData.map((ep: Episode) => ep.slug);
@@ -15,7 +16,8 @@ const epList: string[] = epData.map((ep: Episode) => ep.slug);
 <template>
   <ul class="movie-episodes">
     <li class="movie-episodes__item" v-for="(index) in totalEp" :key="index">
-      <RouterLink :to="{ name: route.name, params: { ...route.params, ...{ ep: epList[index - 1] } }, force: true }"
+      <RouterLink
+        :to="{ name: route.name, params: { ...route.params, ...{ ep: epList[index - 1], server: props.server } }, force: true }"
         class="movie-episodes__link"
         :class="{ 'movie-episodes__link--active': index === currentEp + 1 && isServerSelected, 'movie-episodes__link--disable': epData[index - 1] === undefined }">
         {{ index }}
