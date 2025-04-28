@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { VideoPlayer } from 'vue-hls-video-player';
 import type { Episode } from '../../services/types';
 const props = defineProps<{
   ep: Episode,

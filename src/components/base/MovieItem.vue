@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { MovieInfo } from "../../services/types";
 import Icon from "./Icon.vue";
-import { arrayToString } from "../../utils/helper";
 import LazyLoadingImg from "./LazyLoadingImg.vue";
 defineProps<{
   movie: MovieInfo;
