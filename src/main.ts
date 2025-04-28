@@ -31,10 +31,14 @@ const routes = [
     name: "hoat-hinh",
   },
   {
-    path: "/phim/:slug/:ep?",
+    path: "/phim/:slug/:ep?/:server?",
     component: () => import("./pages/MoviePage.vue"),
     name: "phim",
     props: true,
+    alias: [
+      "/phim/:slug/:ep?",
+      "/phim/:slug/"
+    ]
   },
   {
     path: "/tim-kiem",

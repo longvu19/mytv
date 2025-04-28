@@ -19,7 +19,7 @@ export const getCategoryMovies = async (
       data = store.apiRes.get(storeIndex) as CategoryMoviesResponse;
     } else {
       const response = await api.get<CategoryMoviesResponse>(
-        `/v1/api/danh-sach/${categorySlug}?page=${page}&limit=${limit}`
+        `/films/danh-sach/${categorySlug}?page=${page}&limit=${limit}`
       );
       data = response.data;
       store.setApiRes(storeIndex, response.data);

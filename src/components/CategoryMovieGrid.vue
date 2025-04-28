@@ -29,19 +29,24 @@ const movies: CategoryMoviesResponse = await getCategoryMovies(
 <template>
   <div class="category-movie">
     <Title class="category-movie__title">{{ title }}</Title>
-    <MovieGrid :imgHost="movies.data.APP_DOMAIN_CDN_IMAGE" :movies="movies.data.items" />
-    <Pagination v-bind="movies.data.params.pagination" />
+    <MovieGrid :movies="movies.items" />
+    <Pagination :currentPage="movies.paginate.current_page" :totalItemsPerPage="movies.paginate.items_per_page"
+      :totalItems="movies.paginate.total_items" :totalPages="movies.paginate.total_page" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.category-movie {
+.category-movie
+{
   padding: 100px 30px 0;
-  @media (max-width: 768px) {
+
+  @media (max-width: 768px)
+  {
     padding: 100px 20px 0;
   }
 
-  &__title {
+  &__title
+  {
     margin-bottom: 30px;
   }
 }

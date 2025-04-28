@@ -43,6 +43,7 @@ EventBus.on<'closePopup'>('closePopup', togglePopupLayer);
   &__main
   {
     display: flex;
+    flex-direction: column;
     flex-grow: 1;
   }
 

@@ -16,7 +16,7 @@ export const getMovieDetail = async (
     if (store.apiRes.has(storeIndex)) {
       data = store.apiRes.get(storeIndex) as MovieDetailResponse;
     } else {
-      const response = await api.get<MovieDetailResponse>(`/phim/${slug}`);
+      const response = await api.get<MovieDetailResponse>(`/film/${slug}`);
       data = response.data;
       store.setApiRes(storeIndex, data);
       setTimeout(() => {
@@ -41,7 +41,7 @@ export const getMovieSearchResult = async (
   if(!keyword) return null;
   try {
     const response = await api.get<MovieSearchResultResponse>(
-      `v1/api/tim-kiem?keyword=${keyword}&limit=${limit}`,
+      `/films/search?keyword=${keyword}&limit=${limit}`,
       {
         signal: abortController?.signal
       }

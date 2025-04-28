@@ -4,7 +4,7 @@ import MovieList from './base/MovieList.vue';
 import Button from './base/Button.vue';
 import '@splidejs/vue-splide/css';
 import { Splide } from '@splidejs/vue-splide';
-import type { CategoryMoviesResponse, MovieListInfo } from '../services/types';
+import type { CategoryMoviesResponse, MovieInfo } from '../services/types';
 import { getCategoryMovies } from '../services/categoryMoviesService';
 import { reactive } from 'vue';
 const props = defineProps<{
@@ -13,10 +13,9 @@ const props = defineProps<{
 }>()
 
 const categoryMoiveList: CategoryMoviesResponse = await getCategoryMovies(props.category);
-const movieList: MovieListInfo[] = await categoryMoiveList.data.items;
-const APP_DOMAIN_CDN_IMAGE = await categoryMoiveList.data.APP_DOMAIN_CDN_IMAGE;
+const movieList: MovieInfo[] = await categoryMoiveList.items;
 
-const options = reactive({ type: 'slide', drag: 'free', wheel: false, lazyLoad: true, autoWidth: false, speed: 300, gap: "20px", pagination: false, waitForTransition: true, omitEnd: true, focus: 0});
+const options = reactive({ type: 'slide', drag: 'free', wheel: false, lazyLoad: true, autoWidth: false, speed: 300, gap: "20px", pagination: false, waitForTransition: true, omitEnd: true, focus: 0 });
 </script>
 
 <template>
@@ -29,35 +28,45 @@ const options = reactive({ type: 'slide', drag: 'free', wheel: false, lazyLoad: 
       <div class="splide__arrows"></div>
     </div>
     <div class="category__list">
-      <MovieList :movies="movieList" :imgHost="APP_DOMAIN_CDN_IMAGE" />
+      <MovieList :movies="movieList" />
     </div>
   </Splide>
 </template>
 
 <style lang="scss" scoped>
-.category {
+.category
+{
   display: flex;
   flex-direction: column;
   padding: 0 60px;
   min-height: 310px;
-  @media (max-width: 1024px){
+
+  @media (max-width: 1024px)
+  {
     padding: 0 40px;
   }
-  @media (max-width: 768px){
+
+  @media (max-width: 768px)
+  {
     padding: 0 20px;
   }
 
-  &__tilte-container {
+  &__tilte-container
+  {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
   }
-  .splide__arrows {
+
+  .splide__arrows
+  {
     display: flex;
     gap: 10px;
     margin-left: auto;
-    &>* {
+
+    &>*
+    {
       position: static;
       transform: none;
     }
