@@ -5,7 +5,7 @@ import type { ComputedRef, Ref } from "vue";
 import { getMovieSearchResult } from "../../services/movieService";
 import type {
   MovieSearchResultResponse,
-  MovieListInfo,
+  MovieInfo,
 } from "../../services/types";
 import SearchResult from "./SearchResult.vue";
 const props = defineProps<{
@@ -24,8 +24,8 @@ const searchResult: Ref<MovieSearchResultResponse | null> = ref(null);
 watchEffect(async () => {
   searchResult.value = props.stopRequest ? null : await getMovieSearchResult(props.keyword, 10, abortController);
 })
-const data: ComputedRef<MovieListInfo[]> = computed(() => {
-  return searchResult.value ? searchResult.value.data.items : [];
+const data: ComputedRef<MovieInfo[]> = computed(() => {
+  return searchResult.value ? searchResult.value.items : [];
 });
 
 const emits = defineEmits<{
@@ -48,11 +48,12 @@ onMounted(() => {
 <template>
   <div v-if="searchResult" class="search-result" :class="{ 'search-result--mobile': props.isMobile }">
     <div class="search-result__list-container">
-      <SearchResult :result="data" :imgHost="searchResult.data.APP_DOMAIN_CDN_IMAGE" v-if="data.length > 0" />
+      <SearchResult :result="data" v-if="data.length > 0" />
       <div v-else class="search-result__no-result">Không tìm thấy kết quả cho "{{ keyword }}"</div>
     </div>
     <div class="search-result__footer" v-if="data.length > 0">
-      <RouterLink :to="{ name: 'tim-kiem', query: { k: keyword } }" class="search-result__footer-link" :class="footerLinkClassObject">
+      <RouterLink :to="{ name: 'tim-kiem', query: { k: keyword } }" class="search-result__footer-link"
+        :class="footerLinkClassObject">
         Xem thêm
       </RouterLink>
     </div>
@@ -63,7 +64,8 @@ onMounted(() => {
 <style lang="scss" scoped>
 $className: "search-result";
 
-.#{$className} {
+.#{$className}
+{
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -72,7 +74,8 @@ $className: "search-result";
   width: 100%;
   background: rgb(17, 17, 17);
 
-  &__no-result {
+  &__no-result
+  {
     text-align: center;
     color: white;
     padding: 10px;
@@ -82,33 +85,39 @@ $className: "search-result";
     justify-content: center;
   }
 
-  &--mobile {
+  &--mobile
+  {
     display: flex;
     position: static;
     flex-grow: 1;
     background: transparent;
     height: calc(100% - 70px);
 
-    .#{$className}__list-container {
+    .#{$className}__list-container
+    {
       max-height: unset;
       flex-grow: 1;
     }
 
-    .#{$className}__no-result {
+    .#{$className}__no-result
+    {
       height: 100%;
     }
   }
 
-  &__list-container {
+  &__list-container
+  {
     max-height: 380px;
     overflow: auto;
   }
 
-  &__footer {
+  &__footer
+  {
     display: flex;
   }
 
-  &__footer-link {
+  &__footer-link
+  {
     display: block;
     width: 100%;
     padding: 5px 0;
@@ -117,11 +126,13 @@ $className: "search-result";
     text-align: center;
     background: rgb(17, 17, 17);
 
-    &--mobile {
+    &--mobile
+    {
       padding: 20px 0;
     }
 
-    &:hover {
+    &:hover
+    {
       background: rgb(64, 64, 64);
     }
   }

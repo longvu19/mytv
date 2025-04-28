@@ -21,9 +21,8 @@ const movies: MovieSearchResultResponse | null = await getMovieSearchResult(
     <Title class="search-movie__title"
       >Tìm kiếm với từ khoá: "{{ keyword }}"</Title
     >
-    <MovieGrid v-if="movies"
-      :imgHost="movies.data.APP_DOMAIN_CDN_IMAGE"
-      :movies="movies.data.items"
+    <MovieGrid v-if="movies" 
+      :movies="movies.items"
     />
   </div>
 </template>

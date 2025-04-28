@@ -16,7 +16,7 @@ export const getFeaturingMovies = async (
       data = store.apiRes;
     } else {
       const response = await api.get<FeaturingMovieResponse>(
-        `/danh-sach/phim-moi-cap-nhat?page=${page}&limit=5`
+        `/films/phim-moi-cap-nhat?page=${page}&limit=5`
       );
       data = response.data;
       data.items.forEach((item) => {

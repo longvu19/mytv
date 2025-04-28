@@ -1,21 +1,22 @@
 <script lang="ts" setup>
-import { VideoPlayer } from 'vue-hls-video-player';
-const props= defineProps<{
-  link: string,
+import type { Episode } from '../../services/types';
+const props = defineProps<{
+  ep: Episode,
   thumb: string
 }>()
 </script>
 
 <template>
   <div>
-    <VideoPlayer type="default" :previewImageLink="props.thumb" :link="props.link" :progress="30" :isMuted="false" :isControls="true" class="movie-player" />
+    <iframe :src="props.ep.embed" frameborder="0" class="movie-player"></iframe>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.movie-player {
+.movie-player
+{
   width: 100%;
   height: 100vh;
-  outline:none;
+  outline: none;
 }
 </style>
