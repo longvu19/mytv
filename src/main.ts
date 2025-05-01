@@ -37,7 +37,7 @@ const routes = [
     props: true,
     alias: [
       "/phim/:slug/:ep?",
-      "/phim/:slug/"
+      "/phim/:slug"
     ]
   },
   {

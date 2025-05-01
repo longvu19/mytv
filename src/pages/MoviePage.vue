@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watchEffect, computed } from "vue";
-import type { Ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
@@ -20,7 +20,6 @@ const props = withDefaults(defineProps<{
   server?: string;
 }>(), {
   ep: '1',
-  server: 'vietsub'
 })
 const movieResponse: MovieDetailResponse = await getMovieDetail(props.slug);
 const { movie, status } = movieResponse;
@@ -32,22 +31,22 @@ const servers: string[] = [
   'vietsub',
   'thuyet-minh'
 ]
+const serverIndex: ComputedRef<number> = computed(() => {
+  const server: string = props.server === '' ? servers[0] : props.server as string;
+  return servers.indexOf(server);
+})
 if (!status) {
   alert("Phim đang được cập nhật");
   router.push({ name: "home" });
 } else {
-
-
   watchEffect(() => {
-    let serverIndex = servers.indexOf(props.server ? props.server : servers[0]);
-
-    let ep = props.ep ? episodes[serverIndex].items.find(episode => episode.slug === props.ep || episode.name === props.ep) : episodes[serverIndex].items[serverIndex];
+    let ep = props.ep ? episodes[serverIndex.value].items.find(episode => episode.slug === props.ep || episode.name === props.ep) : episodes[serverIndex.value].items[serverIndex.value];
     if (ep) {
       currentEp.value = ep;
-      currentEpNum.value = episodes[serverIndex].items.indexOf(ep);
+      currentEpNum.value = episodes[serverIndex.value].items.indexOf(ep);
     } else {
       alert("Chưa có tập phim này");
-      router.push({ name: route.name, params: { ...route.params, ...{ ep: episodes[serverIndex].items[0].slug, server: servers[serverIndex] } }, force: true });
+      router.push({ name: route.name, params: { ...route.params, ...{ ep: episodes[serverIndex.value].items[0].slug, server: servers[serverIndex.value] } }, force: true });
     }
   })
   const verified_url = computed(async () => {
@@ -69,9 +68,8 @@ if (!status) {
       <div class="movie-info__episodes">
         <div class="movie-info__episodes-server" v-for="episode, index in episodes" :key="index">
           <strong class="movie-info__episodes-title">{{ episode.server_name }}</strong>
-          <EpisodeList class="movie-info__episodes-list" :isServerSelected="index === servers.indexOf(props.server)"
-            :episodes="episode" :currentEp="currentEpNum" :server="servers[index]"
-            :totalEp="parseInt(movie.total_episodes)" />
+          <EpisodeList class="movie-info__episodes-list" :isServerSelected="index === serverIndex" :episodes="episode"
+            :currentEp="currentEpNum" :server="servers[index]" :totalEp="parseInt(movie.total_episodes)" />
         </div>
       </div>
       <h2 class="movie-info__title">{{ movie.name }}</h2>

@@ -8,7 +8,7 @@ const props = defineProps<{
 
 <template>
   <div>
-    <iframe :src="props.ep.embed" frameborder="0" class="movie-player"></iframe>
+    <iframe :src="props.ep.embed" frameborder="0" allowfullscreen class="movie-player"></iframe>
   </div>
 </template>
 
