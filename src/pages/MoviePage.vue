@@ -32,7 +32,7 @@ const servers: string[] = [
   'thuyet-minh'
 ]
 const serverIndex: ComputedRef<number> = computed(() => {
-  const server: string = props.server === '' ? servers[0] : props.server as string;
+  const server = props.server || servers[0];
   return servers.indexOf(server);
 })
 if (!status) {
