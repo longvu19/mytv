@@ -14,13 +14,11 @@ import type {
   MovieDetailResponse,
   Episode
 } from "../services/types";
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   slug: string;
   ep?: string;
   server?: string;
-}>(), {
-  ep: '1',
-})
+}>()
 const movieResponse: MovieDetailResponse = await getMovieDetail(props.slug);
 const { movie, status } = movieResponse;
 const episodes = movie.episodes;
@@ -40,7 +38,7 @@ if (!status) {
   router.push({ name: "home" });
 } else {
   watchEffect(() => {
-    let ep = props.ep ? episodes[serverIndex.value].items.find(episode => episode.slug === props.ep || episode.name === props.ep) : episodes[serverIndex.value].items[serverIndex.value];
+    let ep = props.ep ? episodes[serverIndex.value].items.find(episode => episode.slug === props.ep || episode.name === props.ep) : episodes[serverIndex.value].items[0];
     if (ep) {
       currentEp.value = ep;
       currentEpNum.value = episodes[serverIndex.value].items.indexOf(ep);
