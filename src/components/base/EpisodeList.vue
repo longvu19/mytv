@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import type { Episode, MovieEpisode } from '../../services/types';
+import type { PlayableEpisode, ServerGroup } from '../../services/types';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 const props = defineProps<{
-  episodes: MovieEpisode,
+  episodes: ServerGroup,
   isServerSelected: boolean,
   currentEp: number,
   totalEp: number,
   server: string
 }>();
-const epData: Episode[] = props.episodes.items;
-const epList: string[] = epData.map((ep: Episode) => ep.slug);
+const epData: PlayableEpisode[] = props.episodes.items;
+const epList: string[] = epData.map((ep: PlayableEpisode) => ep.slug);
 </script>
 
 <template>

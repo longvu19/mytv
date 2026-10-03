@@ -13,10 +13,10 @@
     "@types/node": "^18.8.0",
     "axios": "^1.20.0",
     "firebase": "^12.19.0",
+    "hls.js": "^1.7.3",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
-    "vue-hls-video-player": "^1.0.1",
     "vue-router": "^4.4.0",
     "vuefire": "^3.2.3"
   },
