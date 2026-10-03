@@ -2,11 +2,12 @@
 import Menu from "../base/Menu.vue";
 import SearchBox from "../base/SearchBox.vue";
 import Button from "../base/Button.vue";
-import UserNav from "../UserNav.vue";
 import { useResponsive } from "../../plugins/responsive";
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed, watch, defineAsyncComponent } from "vue";
 import { lockScroll } from "../../utils/helper";
 import logo from "/logo-mytv.svg?url";
+// Lazy: keeps firebase/auth out of the Layout chunk shared by every page
+const UserNav = defineAsyncComponent(() => import("../UserNav.vue"));
 const props = defineProps<{
   onlyLogo?: boolean;
 }> ()
@@ -33,10 +34,14 @@ const toggleSearchBox = (state?: boolean) => {
 watch([isMobile, searchBoxActive], () => {
   lockScroll(isMobile.value && searchBoxActive.value)
 })
+const onScroll = () => {
+  scrollTop.value = window.scrollY;
+};
 onMounted(() => {
-  window.addEventListener("scroll", () => {
-    scrollTop.value = window.scrollY;
-  });
+  window.addEventListener("scroll", onScroll, { passive: true });
+});
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", onScroll);
 });
 </script>
 <template>

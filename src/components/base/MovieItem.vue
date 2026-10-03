@@ -2,6 +2,7 @@
 import { MovieInfo } from "../../services/types";
 import Icon from "./Icon.vue";
 import LazyLoadingImg from "./LazyLoadingImg.vue";
+import { webpImage } from "../../utils/helper";
 defineProps<{
   movie: MovieInfo;
 }>();
@@ -10,7 +11,7 @@ defineProps<{
 <template>
   <div class="movie-item">
     <div class="movie-item__image">
-      <LazyLoadingImg :imgSrc="`${movie.thumb_url}`"
+      <LazyLoadingImg :imgSrc="webpImage(movie, 'thumb_url')"
         :showPlaceholder="movie.thumb_url === null || movie.thumb_url === ''" :imgAlt="movie.name" />
     </div>
     <div class="movie-item__info">

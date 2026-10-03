@@ -1,16 +1,18 @@
 <script lang="ts" setup>
-import type { Episode, MovieEpisode } from '../../services/types';
+import { computed } from 'vue';
+import type { PlayableEpisode, ServerGroup } from '../../services/types';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 const props = defineProps<{
-  episodes: MovieEpisode,
+  episodes: ServerGroup,
   isServerSelected: boolean,
   currentEp: number,
   totalEp: number,
   server: string
 }>();
-const epData: Episode[] = props.episodes.items;
-const epList: string[] = epData.map((ep: Episode) => ep.slug);
+// computed: the list can grow once the secondary source arrives
+const epData = computed<PlayableEpisode[]>(() => props.episodes.items);
+const epList = computed<string[]>(() => epData.value.map((ep: PlayableEpisode) => ep.slug));
 </script>
 
 <template>

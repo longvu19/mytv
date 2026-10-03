@@ -7,14 +7,19 @@ const props = withDefaults(defineProps<{
   imgAlt: string;
   class?: string;
   size?: string;
+  loading?: "lazy" | "eager";
+  fetchpriority?: "high" | "low" | "auto";
 }>(), {
   size: "100%",
+  loading: "lazy",
+  fetchpriority: "auto",
 });
 
 </script>
 <template>
   <Suspense>
-    <Image :imgSrc="props.imgSrc" :imgAlt="props.imgAlt" :class="props.class" :size="props.size" />
+    <Image :imgSrc="props.imgSrc" :imgAlt="props.imgAlt" :class="props.class" :size="props.size"
+      :loading="props.loading" :fetchpriority="props.fetchpriority" />
     <template #fallback>
       <Loading size="30px" type="square" />
     </template>

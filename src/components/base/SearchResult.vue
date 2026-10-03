@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { MovieInfo } from "../../services/types";
 import LazyLoadingImg from "./LazyLoadingImg.vue";
+import { webpImage } from "../../utils/helper";
 const props = defineProps<{
   result: MovieInfo[];
 }>();
@@ -12,7 +13,7 @@ const props = defineProps<{
     <li v-for="movie in props.result" :key="movie.id" class="search-result-list__item">
       <RouterLink :to="{ name: 'phim', params: { slug: movie.slug } }" class="search-result-list__item-link">
         <span class="search-result-list__item-poster">
-          <LazyLoadingImg :imgSrc="movie.poster_url" :showPlaceholder="movie.poster_url === null || movie.poster_url === ''
+          <LazyLoadingImg :imgSrc="webpImage(movie, 'poster_url')" :showPlaceholder="movie.poster_url === null || movie.poster_url === ''
             " :imgAlt="movie.name" />
         </span>
         <span class="search-result-list__item-title">

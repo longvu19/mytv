@@ -80,7 +80,7 @@ export interface Episode {
   name: string;
   slug: string;
   embed: string;
-  m3u8: string;
+  m3u8?: string;
 }
 
 export interface MovieEpisode {
@@ -91,6 +91,63 @@ export interface MovieEpisode {
 export interface MovieDetailResponse {
   status: string;
   movie: MovieDetail;
+}
+
+// Secondary source (phimapi.com)
+export interface AltEpisode {
+  name: string;
+  slug: string;
+  link_embed: string;
+  link_m3u8: string;
+}
+
+export interface AltServer {
+  server_name: string;
+  server_data: AltEpisode[];
+}
+
+export interface AltMovieResponse {
+  status: boolean;
+  movie?: {
+    slug: string;
+    name: string;
+    origin_name: string;
+    year: number;
+  };
+  episodes?: AltServer[];
+}
+
+export interface AltSearchResponse {
+  status: string;
+  data?: {
+    items: {
+      slug: string;
+      name: string;
+      origin_name: string;
+      year: number;
+    }[];
+  };
+}
+
+export type SourceProvider = "nguonc" | "phimapi";
+
+export interface EpisodeSource {
+  provider: SourceProvider;
+  type: "embed" | "hls";
+  url: string;
+}
+
+export interface PlayableEpisode {
+  name: string;
+  slug: string;
+  key: string;
+  sources: EpisodeSource[];
+}
+
+export interface ServerGroup {
+  key: string;
+  name: string;
+  items: PlayableEpisode[];
 }
 
 export interface InputProps {
