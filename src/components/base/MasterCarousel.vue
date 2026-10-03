@@ -82,6 +82,21 @@ defineProps<{
     }
   }
 
+  &__desc
+  {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+
+    @media (max-width: 768px)
+    {
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+    }
+  }
+
   &__button
   {
     align-self: flex-start;
