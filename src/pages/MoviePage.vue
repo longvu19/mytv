@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watchEffect, computed } from "vue";
+import { ref, watch, watchEffect, computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
@@ -26,22 +26,36 @@ const props = defineProps<{
 }>()
 const movieResponse: MovieDetailResponse = await getMovieDetail(props.slug);
 const { movie, status } = movieResponse;
-const servers: ServerGroup[] = status ? buildServerGroups(movie.episodes, await getAltServers(movie)) : [];
-const isAvailable: boolean = Boolean(status) && servers.length > 0;
+// Wait this long for the secondary source before starting the player with what we have
+const ALT_SOURCE_WAIT_MS = 1500;
+const servers: Ref<ServerGroup[]> = ref(status ? buildServerGroups(movie.episodes, []) : []);
+const isAvailable: boolean = Boolean(status) && servers.value.length > 0;
+const isAltLoading: Ref<boolean> = ref(isAvailable);
+const isPlayerReady: Ref<boolean> = ref(!isAvailable);
 const playerStore = usePlayerStore();
 const currentEp: Ref<PlayableEpisode | null> = ref(null);
 const currentEpNum: Ref<number> = ref(0);
 const poster_url: Ref<string> = ref('');
 const failedSources: Ref<Set<string>> = ref(new Set());
 const sourceNotice: Ref<string> = ref('');
+// Source chosen for the current episode, kept when the secondary source arrives mid-playback
+const pinnedSource: Ref<{ episode: string; url: string } | null> = ref(null);
 const serverIndex: ComputedRef<number> = computed(() => {
-  return Math.max(servers.findIndex(server => server.key === props.server), 0);
+  return Math.max(servers.value.findIndex(server => server.key === props.server), 0);
 })
-const currentSource: ComputedRef<EpisodeSource | null> = computed(() => {
-  const sources = currentEp.value?.sources ?? [];
-  const usable = sources.filter(source => !failedSources.value.has(source.url));
-  const candidates = usable.length ? usable : sources;
+const episodeId = (ep: PlayableEpisode): string => `${servers.value[serverIndex.value].key}/${ep.slug}`;
+const usableSources = (ep: PlayableEpisode): EpisodeSource[] => {
+  const usable = ep.sources.filter(source => !failedSources.value.has(source.url));
+  return usable.length ? usable : ep.sources;
+}
+const defaultSource = (ep: PlayableEpisode): EpisodeSource | null => {
+  const candidates = usableSources(ep);
   return candidates.find(source => source.provider === playerStore.preferredProvider) ?? candidates[0] ?? null;
+}
+const currentSource: ComputedRef<EpisodeSource | null> = computed(() => {
+  const ep = currentEp.value;
+  if (!ep || !isPlayerReady.value) return null;
+  return usableSources(ep).find(source => source.url === pinnedSource.value?.url) ?? defaultSource(ep);
 })
 const sourceLabel = (source: EpisodeSource | null): string => {
   const index = currentEp.value?.sources.findIndex(item => item.url === source?.url) ?? -1;
@@ -51,6 +65,7 @@ const selectSource = (source: EpisodeSource) => {
   failedSources.value.delete(source.url);
   sourceNotice.value = '';
   playerStore.setPreferredProvider(source.provider);
+  if (currentEp.value) pinnedSource.value = { episode: episodeId(currentEp.value), url: source.url };
 }
 const onSourceError = () => {
   const failed = currentSource.value;
@@ -65,20 +80,37 @@ if (!isAvailable) {
   alert("Phim đang được cập nhật");
   router.push({ name: "home" });
 } else {
+  // Secondary source loads in the background so it never blocks the page
+  const altServers = getAltServers(movie).then(alt => {
+    if (alt.length) servers.value = buildServerGroups(movie.episodes, alt);
+  }).finally(() => {
+    isAltLoading.value = false;
+  });
+  Promise.race([altServers, new Promise(resolve => setTimeout(resolve, ALT_SOURCE_WAIT_MS))]).then(() => {
+    isPlayerReady.value = true;
+  });
   watchEffect(() => {
-    const items = servers[serverIndex.value].items;
+    const items = servers.value[serverIndex.value].items;
     let ep = props.ep ? items.find(episode => episode.slug === props.ep || episode.name === props.ep) : items[0];
     if (ep) {
       currentEp.value = ep;
       currentEpNum.value = items.indexOf(ep);
-    } else {
+    } else if (!isAltLoading.value) {
       alert("Chưa có tập phim này");
-      router.push({ name: route.name, params: { ...route.params, ...{ ep: items[0].slug, server: servers[serverIndex.value].key } }, force: true });
+      router.push({ name: route.name, params: { ...route.params, ...{ ep: items[0].slug, server: servers.value[serverIndex.value].key } }, force: true });
     }
   })
+  watch([currentEp, isPlayerReady], () => {
+    const ep = currentEp.value;
+    if (!ep || !isPlayerReady.value) return;
+    const id = episodeId(ep);
+    if (pinnedSource.value?.episode === id && ep.sources.some(source => source.url === pinnedSource.value?.url)) return;
+    pinnedSource.value = { episode: id, url: defaultSource(ep)?.url ?? '' };
+    sourceNotice.value = '';
+  }, { immediate: true })
   const verified_url = computed(async () => {
-    if (movie.poster_url) {
-      return movie.poster_url;
+    if (movie.poster_url_webp || movie.poster_url) {
+      return movie.poster_url_webp || movie.poster_url;
     } else {
       const photoPlaceholder = await import("../assets/photo.svg?url");
       return photoPlaceholder.default;
@@ -90,8 +122,9 @@ if (!isAvailable) {
 
 <template>
   <Layout v-if="isAvailable">
-    <MoviePlayer class="movie-player" :source="currentSource" v-if="currentSource" :thumb="movie.thumb_url"
-      @error="onSourceError" />
+    <MoviePlayer class="movie-player" :source="currentSource" v-if="currentSource"
+      :thumb="movie.thumb_url_webp || movie.thumb_url" @error="onSourceError" />
+    <div class="movie-player movie-player--placeholder" v-else></div>
     <div class="movie-info">
       <div class="movie-info__sources" v-if="currentEp && currentEp.sources.length > 1">
         <strong class="movie-info__episodes-title">Nguồn phát</strong>
@@ -127,6 +160,14 @@ if (!isAvailable) {
 </template>
 
 <style lang="scss" scoped>
+// Same box as the player while waiting for sources, so nothing jumps
+.movie-player--placeholder
+{
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+}
+
 .movie-info
 {
   padding: 20px;

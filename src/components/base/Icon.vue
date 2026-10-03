@@ -11,8 +11,13 @@
   </span>
 </template>
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
-import type { Ref } from "vue";
+import { computed } from "vue";
+// URLs only (a few bytes each): icons render immediately instead of one lazy chunk per icon
+const iconUrls = import.meta.glob<string>("../../assets/*.svg", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
 const props = withDefaults(
   defineProps<{
     src: string;
@@ -24,18 +29,7 @@ const props = withDefaults(
   }
 );
 
-const icon: Ref<string | null> = ref(null);
-const rendered = ref("false");
-
-watchEffect(async () => {
-  try {
-    const svgModule = await import(`../../assets/${props.src}.svg?url`);
-    icon.value = (await svgModule.default) || svgModule;
-    rendered.value = "true";
-  } catch (error) {
-    console.log(error);
-  }
-});
+const icon = computed<string | null>(() => iconUrls[`../../assets/${props.src}.svg`] ?? null);
 </script>
 <style lang="scss" scoped>
 .icon {
