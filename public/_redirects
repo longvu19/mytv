@@ -1,10 +1,4 @@
 # Redirects from what the browser requests to what we serve
+# SPA: let the Vue router handle every route (e.g. /dat-lai-mat-khau from Firebase emails)
 
-/phim-bo /index.html 200!
-/tv-shows /index.html 200!
-/phim-le /index.html 200!
-/hoat-hinh /index.html 200!
-/phim /index.html 200!
-/phim/* /index.html 200!
-/tim-kiem /index.html 200!
-/tim-kiem/* /index.html 200!
+/* /index.html 200
