@@ -6,9 +6,13 @@
     imgSrc: string;
     imgAlt: string;
     class?: string|object;
-    size?: string
+    size?: string;
+    loading?: "lazy" | "eager";
+    fetchpriority?: "high" | "low" | "auto";
   }>(), {
     size: "100%",
+    loading: "lazy",
+    fetchpriority: "auto",
   });
   const imageLoaded = ref(false);
   // const imgPromise = new Promise((resolve) => {
@@ -32,7 +36,8 @@
 <template>
   <!-- <figure ref="picture">
   </figure> -->
-  <img :src="props.imgSrc" :alt="props.imgAlt" @load="imageLoaded = true" :class="props.class" loading="lazy"/>
+  <img :src="props.imgSrc || undefined" :alt="props.imgAlt" @load="imageLoaded = true" :class="props.class"
+    :loading="props.loading" :fetchpriority="props.fetchpriority" />
   <Loading v-if="!imageLoaded" type="square" size="30px" />
 </template>
 

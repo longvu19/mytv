@@ -4,20 +4,31 @@ import '@splidejs/vue-splide/css';
 import Button from './Button.vue';
 import type { MovieInfo } from '../../services/types';
 import LazyLoadingImg from './LazyLoadingImg.vue';
+import { ref } from 'vue';
+import { webpImage } from '../../utils/helper';
 
-defineProps<{
+const props = defineProps<{
   options: any;
   slides: MovieInfo[] | null;
   label: string
 }>()
+// Fade slides are stacked, so native lazy-loading would fetch all of them at once.
+// Load the visible slide plus the next one only.
+const loadedSlides = ref(new Set([0, 1]));
+const onMove = (_splide: unknown, newIndex: number) => {
+  const total = props.slides?.length || 1;
+  loadedSlides.value.add(newIndex);
+  loadedSlides.value.add((newIndex + 1) % total);
+}
 </script>
 <template>
-  <Splide class="master-carousel" :options="options" :aria-label="label">
-    <template v-for="(movie) in slides" :key="movie.id">
+  <Splide class="master-carousel" :options="options" :aria-label="label" @splide:move="onMove">
+    <template v-for="(movie, index) in slides" :key="movie.id">
       <SplideSlide class="master-carousel__item">
         <div class="master-carousel__image">
-          <LazyLoadingImg :imgSrc="movie.poster_url"
-            :showPlaceholder="movie.poster_url === '' || movie.poster_url === null" :imgAlt="movie.name" />
+          <LazyLoadingImg :imgSrc="loadedSlides.has(index) ? webpImage(movie, 'poster_url') : ''"
+            :showPlaceholder="movie.poster_url === '' || movie.poster_url === null" :imgAlt="movie.name"
+            :loading="index === 0 ? 'eager' : 'lazy'" :fetchpriority="index === 0 ? 'high' : 'auto'" />
         </div>
         <div class="master-carousel__info">
           <h3 class="master-carousel__title">{{ movie.name }}</h3>

@@ -19,14 +19,6 @@ export const getFeaturingMovies = async (
         `/films/phim-moi-cap-nhat?page=${page}&limit=5`
       );
       data = response.data;
-      data.items.forEach((item) => {
-        const link = document.createElement("link");
-        link.rel = "preload";
-        link.href = item.thumb_url;
-        link.as = "image";
-        link.fetchPriority = "high";
-        document.head.appendChild(link);
-      });
       store.setApiRes(response.data);
       setTimeout(() => {
         store.clearApiRes();
